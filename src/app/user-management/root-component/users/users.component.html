@@ -1,0 +1,432 @@
+
+<app-header></app-header>
+
+<br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="table-container">
+                <h6 style="color: #44a;font-size: 16px;">Add User</h6>
+                <div class="form-area" d-flex>
+                    <form [formGroup]="form" (ngSubmit)="addUser()">
+                        <div class="row justify-content-start">
+                            <div class="col-md-3" style="margin-bottom: 20px;">
+                                    <label *ngIf="userform.user_name.value?true:false">User Name</label>
+                                    <label style="color:#ffffff">*</label>
+                                    <input type="text"
+                                    placeholder="Username"
+                                    name="user_name"
+                                    formControlName="user_name"
+                                    >
+                                    <div class="alert alert-danger" *ngIf=" (userform.user_name?.touched || is_clicked) && userform.user_name?.invalid">
+                                        <div *ngIf="userform.user_name?.errors.required">*Username Is Required</div>
+                                    </div>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                
+                                    <label *ngIf="userform.email.value?true:false">Email</label>
+                                    <label style="color:#ffffff">*</label>
+                                    <input type="email"
+                                    placeholder="Email"
+                                    name="email"
+                                    formControlName="email"
+                                    >
+                                    <div class="alert alert-danger" *ngIf=" (userform.email?.touched || is_clicked) && userform.email?.invalid">
+                                        <div *ngIf="userform.email?.errors.required">*Email Is Required</div>
+                                        <div *ngIf="userform.email?.errors.pattern">*Email pattern Is Not Valid Required</div>
+                                    </div>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                
+                                    <label *ngIf="userform.password.value?true:false">Password</label>
+                                    <label style="color:#ffffff">*</label>
+                                    <input type="password"
+                                    placeholder="Password"
+                                    name="password"
+                                    formControlName="password"
+                                    >
+                                    <div class="alert alert-danger" *ngIf="(userform.password?.touched || is_clicked)&& userform.password?.invalid">
+                                        <div *ngIf="userform.password?.errors.required">*Password Is Required</div>
+                                    </div>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                
+                                    <label *ngIf="userform.mobile_no.value?true:false">Mobile No</label>
+                                    <label style="color:#ffffff">*</label>
+                                    <input type="text"
+                                    placeholder="Mobile No"
+                                    name="mobile_no"
+                                    formControlName="mobile_no"
+                                    >
+                                    <div class="alert alert-danger" *ngIf=" (userform.mobile_no?.touched || is_clicked) && userform.mobile_no?.invalid">
+                                        <div *ngIf="userform.mobile_no?.errors.required">*Mobile No Is Required</div>
+                                    </div>
+                                
+                            </div>
+
+                            <div class="col-md-3">
+                                <label *ngIf="userform.broker_code.value?true:false">Broker Code</label>
+                                <label style="color:#ffffff">*</label>
+                                <input type="text"
+                                placeholder="Broker Code"
+                                name="broker_code"
+                                formControlName="broker_code"
+                                >
+                                <div class="alert alert-danger" *ngIf="(userform.broker_code?.touched || is_clicked) && userform.broker_code?.invalid">
+                                    <div *ngIf="userform.broker_code?.errors.required">*Broker Code Is Required</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label *ngIf="userform.agent_code.value?true:false">Agent Code</label>
+                                <label style="color:#ffffff">*</label>
+                                <input type="text"
+                                placeholder="Agent Code"
+                                name="agent_code"
+                                formControlName="agent_code"
+                                >
+                                <div class="alert alert-danger" *ngIf="(userform.agent_code?.touched || is_clicked) && userform.agent_code?.invalid">
+                                    <div *ngIf="userform.agent_code?.errors.required">*Agent Code Is Required</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                
+                                    <label>Veryfied</label>
+                                    <br>
+                                    <select id="country" formControlName="veryfied">
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select> 
+                                    <div class="alert alert-danger" *ngIf="(userform.veryfied?.touched || is_clicked )&& userform.veryfied?.invalid">
+                                        <div *ngIf="userform.veryfied?.errors.required">*Veryfied Is Required</div>
+                                    </div>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                <label *ngIf="userform.reportsto.value?true:false">Reports To</label>
+                                <label style="color:#ffffff">*</label>
+                                    <input type="text"
+                                    placeholder="Reports To"
+                                    name="reportsto"
+                                    ngModel
+
+                                    formControlName="reportsto"
+                                    [(ngModel)]="searchUserEmail"
+                                    (ngModelChange)="userSearchByEmail(1)"
+                                    #reports_to_input
+                                    >
+                                    <div   *ngIf="searchUserEmail!='' && users.length!=0"  style="border:1px solid rgb(127, 127, 127);border-radius: 2px;position:absolute;z-index: 10;color:gray;background-color: rgb(255, 255, 255);padding:4px;"
+                                    [ngStyle]="{
+                                        'width.px':reports_to_input.offsetWidth
+                                    }"
+                                    >
+                                        <option value="vishal" #optionElement style="padding:4px;" *ngFor="let index=index;let user of users" (click)="clickOnOption(index,user.email,optionElement)">{{user.email}}</option>
+                                    </div>
+                                    <div class="alert alert-danger" *ngIf="(userform.reportsto?.touched || is_clicked)&& userform.reportsto?.invalid">
+                                        <div *ngIf="userform.reportsto?.errors.required">*ManagerEmail Is Required</div>
+                                    </div>
+                            </div>
+
+                        </div>
+                        <br>
+                        <button class="ibtn groupEdit">Submit</button>
+                        <br>
+                        <p></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container specialclass_2">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <h6 style="color: #44a;font-size: 14px;">Organization Mapping</h6>
+            <div class="special-table-container">
+                <div class="row justify-content-between">
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                        Show <select id="country" [(ngModel)]="m_limit" name="veryfied" type="number" (change)="m_changeLimitSearch()" style="width: max-content;height: max-content;padding: 3px;">
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="7">7</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select> Entry
+                    </div>
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                        <input type="text"  [(ngModel)]="m_searchString" placeholder="SEARCH" (ngModelChange)="m_changeLimitSearch()">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th   style="width: 20px;">SI.NO.</th>
+                                <th   style="width: 100px;padding-right: 120px;">Map Id</th>
+                                <th   style="width: 200px;">User Email</th>
+                                <th   style="width: 300px;">Reporting Email</th>
+                                <th   style="width: 133px;">Level</th>
+                                <th   style="width: 133px;">Created By</th>
+                                <th   style="width: 133px;">Updated By</th>
+                                <th   style="width: 60px;">Created At</th>
+                                <th   style="width: 133px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd" *ngFor="let index=index;let m_data of m_mappingData">
+                                <td>{{m_offset+index}}</td>
+                                <td>{{m_data.map_id}}</td>
+                                <td style="color: rgb(0, 102, 254);">{{m_data.email}}</td>
+                                <td style="color: rgb(0, 102, 254);">{{m_data.reports_to}}</td>
+                                <td>{{m_data.level}}</td>
+                                <td>{{m_data.created_by}}</td>
+                                <td>{{m_data.updated_by}}</td>
+                                <td>{{m_data.created_at}}</td>
+                                <td style="color:rgb(0, 102, 254);border:1px solid gray">Modify Mapping</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div *ngIf="m_numOfButton<=7; then m_thenBlock; else m_elseBlock"></div>
+                        <ng-template #m_thenBlock>
+                            <div class="row justify-content-between" style="margin-right:10px">
+                                <div class="col-7" #m_parent>
+                                    <button class="m_nonactive">Previous</button>
+                                    <button *ngFor="let m_button of m_buttonArray;let index=index" #m_element (click)="m_navigationClick($event,m_element,m_parent)"
+                                    [ngClass]="{
+                                        'm_active':m_element.textContent==m_activeButton,
+                                        'm_nonactive':m_element.textContent!=m_activeButton
+                                    }"
+                                    >{{m_button}}</button>
+                                    <button class="m_nonactive">Next</button>
+                                </div>
+                                <div class="col-4" style="text-align: end;">Showing {{m_offset}} to {{m_offset+m_limit-1}} entries</div>
+                            </div>
+                        </ng-template>
+                        <ng-template #m_elseBlock>
+                            <div class="row justify-content-between" style="margin-right:10px">
+                                <div class="col-7" #m_parent>
+                                    <button class="m_nonactive">Previous</button>
+                                    <button *ngFor="let m_button of m_buttonArray;let index=index" #m_element (click)="m_navigationClick($event,m_element,m_parent)"
+                                    [ngClass]="{
+                                        'm_active':m_element.textContent==m_activeButton && m_element.textContent!='.........',
+                                        'm_nonactive':m_element.textContent!=m_activeButton && m_element.textContent !='.........',
+                                        'm_buttonDisable':m_element.textContent=='.........'
+                                        }"
+                                    >{{m_button}}</button>
+                                    <button class="m_nonactive">Next</button>
+                                </div>
+                                <div class="col-3" style="text-align: end;">Showing {{m_offset}} to {{m_offset+m_limit-1}} Content</div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <h6 style="color: #44a;font-size: 14px;">Modify Reporting Structure</h6>
+            <div class="special-table-container container">
+                <form #f = 'ngForm'>
+                    <div class="row justify-content-between">
+                        <div class="col-6">
+                            <div>
+                                <input type="text" style="width: 100%;border-bottom: 1px solid rgb(165, 165, 165);border-radius: 2px;"
+                                name="userEmail"
+                                ngModel
+                                placeholder="User Email"
+                                [(ngModel)]="user_searchString"
+                                (ngModelChange)="userSearchByEmail(2)"
+                                #tempinput
+                                #userEmail = 'ngModel'
+                                required
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                >
+                                <div *ngIf = "userEmail.errors?.['required']">
+                                    <div class="alert alert-danger" *ngIf="userEmail.invalid && (userEmail.touched || m_is_clicked)">
+                                        User Email Is Required
+                                </div>
+                                   </div>
+                                <div *ngIf = "userEmail.errors?.['pattern']">
+                                    <div class="alert alert-danger" *ngIf="userEmail.invalid && (userEmail.touched || m_is_clicked)">
+                                        Invalid User Email address
+                                    </div>
+                                 </div>
+                            </div>
+                            <ul  *ngIf="user_searchString && userUsers.length>0"   style="background-color: white;border: 1px solid rgb(176, 176, 176);position: absolute;" [ngStyle]="{
+                                'width.px':tempinput.offsetWidth
+                            }">
+                                <li *ngFor="let user of userUsers;let index = index" (click)="clickOnList(index,user.email,1)">{{user.email}} [{{user.user_name}}]</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" style="width: 100%;border-bottom: 1px solid rgb(165, 165, 165);border-radius: 2px;" 
+                            name="reportEmail"
+                            ngModel
+                            placeholder="Reporting Email"
+                            [(ngModel)]="reports_searchString"
+                            (ngModelChange)="userSearchByEmail(3)"
+                            #tempinput_1
+                            #reportEmail = 'ngModel'
+                            required
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                            >
+                            <div *ngIf = "reportEmail.errors?.['required']">
+                                <div class="alert alert-danger" *ngIf="reportEmail.invalid && (reportEmail.touched || m_is_clicked)">
+                                    Manager Email Is Required
+                            </div>
+                               </div>
+                            <div *ngIf = "reportEmail.errors?.['pattern']">
+                                <div class="alert alert-danger" *ngIf="reportEmail.invalid && (reportEmail.touched || m_is_clicked)">
+                                    Invalid Manager Email address
+                                </div>
+                             </div>
+                            <ul  *ngIf="reports_searchString && reportingUsers.length>0"   style="background-color: white;border: 1px solid rgb(176, 176, 176);position: absolute;" [ngStyle]="{
+                                'width.px':tempinput_1.offsetWidth
+                            }">
+                                <li *ngFor="let user of reportingUsers;let index=index" (click)="clickOnList(index,user.email,2)">{{user.email}} [{{user.user_name}}]</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="ibtn" style="margin-left: 0px;" (click)="onSubmit(f,1)">ADD</button> 
+                    <button type="submit" class="ibtn" style="margin-left: 6px;" (click)="onSubmit(f,2)">Re-Build Organization Chart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<br>
+<div class="container specialclass_1">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <h6 style="color: #44a;font-size: 14px;">Manage-Users-Details</h6>
+            <div class="special-table-container">
+                <div class="row justify-content-between">
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                        Show <select id="country" [(ngModel)]="limit" name="veryfied" type="number" (change)="changeLimitSearch()" style="width: max-content;height: max-content;padding: 3px;">
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="7">7</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select> Entry
+                    </div>
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                        <input type="text"  [(ngModel)]="searchString" placeholder="SEARCH" (ngModelChange)="changeLimitSearch()">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th  rowspan="1" colspan="1" style="width: 20px;">SI.NO.</th>
+                                <th  rowspan="1" colspan="1" style="width: 100px;padding-right: 120px;">User Id</th>
+                                <th  rowspan="1" colspan="1" style="width: 200px;">User Name</th>
+                                <th  rowspan="1" colspan="1" style="width: 300px;">Email</th>
+                                <th  rowspan="1" colspan="1" style="width: 133px;">Broker Code</th>
+                                <th  rowspan="1" colspan="1" style="width: 133px;">Agent Code</th>
+                                <th  rowspan="1" colspan="1" style="width: 133px;">Broker Id</th>
+                                <th  rowspan="1" colspan="1" style="width: 133px;">Underwriter</th>
+                                <th  rowspan="1" colspan="1" style="width: 133px;">Is Admin</th>
+                                <th  rowspan="1" colspan="1" style="width: 133px;">Designation</th>
+                                <th  rowspan="1" colspan="1" style="width: 60px;">Status</th>
+                                <th  rowspan="1" colspan="1" style="width: 60px;">Level</th>
+                                <th  rowspan="1" colspan="1" style="width: 133px;">Author</th>
+                                <th  rowspan="1" colspan="1" style="width: 155px;">Last Modified</th>
+                                <th  rowspan="1" colspan="1" style="width: 104px;">Last Modified By</th>
+                                <th  rowspan="1" colspan="1" style="width: 69px;">Modifing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd" *ngFor="let index=index;let user of usersData">
+                                <td>{{offset+index}}</td>
+                                <td style="color: blue">{{user.user_id}}</td>
+                                <td>{{user.user_name}}</td>
+                                <td style="color: blue;">{{user.email}}</td>
+                                <td>{{user.broker_code}}</td>
+                                <td>{{user.agent_code}}</td>
+                                <td>{{user.broker_id}}</td>
+                                <td>{{user.underwriter?"Yes":"No"}}</td>
+                                <td>{{user.is_admin?"Yes":"No"}}</td>
+                                <td>{{user.designation?user.designation:"Not Defined"}}</td>
+                                <td>{{user.status|changeBoolean}}</td>
+                                <td>{{user.level}}</td>
+                                <td>Admin</td>
+                                <td>{{user.updated_at}}</td>
+                                <td>{{user.updated_by}}</td>
+                                <td><button class="ibtn">Edith</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div *ngIf="numOfButton<=7; then thenBlock; else elseBlock"></div>
+                        <ng-template #thenBlock>
+                            <div class="row justify-content-between" style="margin-right:10px">
+                                <div class="col-7" #parent>
+                                    <button class="nonactive">Previous</button>
+                                    <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                                    [ngClass]="{
+                                        'active':element.textContent==activeButton,
+                                        'nonactive':element.textContent!=activeButton
+                                    }"
+                                    >{{button}}</button>
+                                    <button class="nonactive">Next</button>
+                                </div>
+                                <div class="col-4" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} entries</div>
+                            </div>
+                        </ng-template>
+                        <ng-template #elseBlock>
+                            <div class="row justify-content-between" style="margin-right:10px">
+                                <div class="col-7" #parent>
+                                    <button class="nonactive">Previous</button>
+                                    <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                                    [ngClass]="{
+                                        'active':element.textContent==activeButton && element.textContent!='.........',
+                                        'nonactive':element.textContent!=activeButton && element.textContent !='.........',
+                                        'buttonDisable':element.textContent=='.........'
+                                        }"
+                                    >{{button}}</button>
+                                    <button class="nonactive">Next</button>
+                                </div>
+                                <div class="col-3" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} Content</div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card flex justify-content-center gap-2" style="font-size: 20px;font-weight: 600;">
+    <p-toast
+    [life]="5000"
+    position="top-right"
+    [showTransformOptions]="'translateY(100%)'" 
+    [showTransitionOptions]="'1000ms'" 
+    [hideTransitionOptions]="'1000ms'" 
+    [showTransformOptions]="'translateX(100%)'" />
+    <!-- <button type="button" pButton pRipple (click)="showSuccess()" label="Success" class="btn btn-secondary">Sucess</button>
+    <button type="button" pButton pRipple (click)="showInfo()" label="Info" class="btn btn-secondary">Info</button>
+    <button type="button" pButton pRipple (click)="showWarn()" label="Warn" class="btn btn-secondary">Warning</button>
+    <button type="button" pButton pRipple (click)="showError()" label="Error" class="btn btn-secondary">Error</button> -->
+</div>

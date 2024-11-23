@@ -1,0 +1,53 @@
+<style>
+    
+    .dropdown-content {
+      display: none;
+      width: fit-content;
+      z-index: 1;
+      position:absolute;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+      border: 1.5px solid gray;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+    button{
+        background-color: white;
+    }
+    button:hover{
+        background-color: rgb(230, 230, 230);
+    }
+    h6{
+        padding:4px;
+        margin-bottom: 0px;
+        box-sizing: border-box;
+    }
+    h6:hover{
+        background-color: rgb(230, 230, 230);
+        border: 1.5px solid gray;
+        margin-bottom: 0px;
+        border-radius: 3px;
+
+    }
+    </style>
+    
+    <div style="display: flex;flex-wrap: wrap;justify-content: space-around;">
+        <div class="dropdown" style="width:123px;padding-top: 5px;text-align: start;">
+            <h6>Click On me</h6>
+             <div class="dropdown-content">
+            <button style="padding:3px;width:120px;text-align: start;border:none;font-weight: 500;">firstname</button><br>
+            <button style="padding:3px;width:120px;text-align: start;border:none;font-weight: 500;">lastname</button><br>
+            <button style="padding:3px;width:120px;text-align: start;border:none;font-weight: 500;">chinkara</button><br>
+        </div>
+        <div class="dropdown" style="width:123px;padding-top: 5px;text-align: start;">
+            <h6>Click On me</h6>
+             <div class="dropdown-content">
+            <button style="padding:3px;width:120px;text-align: start;border:none;font-weight: 500;">firstname</button><br>
+            <button style="padding:3px;width:120px;text-align: start;border:none;font-weight: 500;">lastname</button><br>
+            <button style="padding:3px;width:120px;text-align: start;border:none;font-weight: 500;">chinkara</button><br>
+        </div>
+    </div>
+
+   

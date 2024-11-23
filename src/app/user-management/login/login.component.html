@@ -1,0 +1,60 @@
+
+<!-- <div style="background-image: 'https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';"></div> -->
+<div class="container" style="height: 50vh;margin-top: 8%;">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-5" style="height: 50vh;">
+            <div class="container">
+                <div class="form-area row justify-content-center align-items-center" style="height: 50vh;padding: 20px;">
+                    <div class="col-10">
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                            <div>
+                                <input type="email"
+                                placeholder="Email"
+                                name="email"
+                                required
+                                formControlName="email"
+                                (change)="onChange()"
+                                style="border: none;border: 1px solid #ccc;border-radius: 3px;"
+                                >
+                                <div class="alert alert-danger" *ngIf="email?.touched && email?.invalid">
+                                    <div *ngIf="email?.errors.required">*Email is Required</div>
+                                    <div *ngIf="email?.errors.pattern">*Email should be in right format</div>
+                                </div>
+                            </div>
+                            <div>
+                                <br>
+                                <input type="password"
+                                placeholder="Password"
+                                name="password"
+                                required
+                                formControlName="password"
+                                style="border: none;border: 1px solid #ccc;border-radius: 3px;"
+                                >
+                                <div class="alert alert-danger" *ngIf="password?.touched && password?.invalid">
+                                    <div *ngIf="password?.errors.required">*Password is Required</div>
+                                </div>
+                            </div>
+                            <br>
+                            <button class="ibtn" [disabled]="form.invalid">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br><br><br><br>
+
+    <p-toast
+    [life]="5000"
+    position="top-right"
+    [showTransformOptions]="'translateY(100%)'" 
+    [showTransitionOptions]="'1000ms'" 
+    [hideTransitionOptions]="'1000ms'" 
+    [showTransformOptions]="'translateX(100%)'"
+    />
+
+

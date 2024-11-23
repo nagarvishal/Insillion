@@ -1,0 +1,122 @@
+
+.data-box {
+    /* Styles for the box */
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 2px;
+  }
+  .table-container {
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent content wrapping */
+  }
+  .special-table-container{
+    overflow-x: scroll;
+  }
+  
+  tr,td,thead,tbody,th{
+    border: none;
+    box-sizing: content-box;
+    font-weight: 500;
+    color: rgb(122, 122, 122);
+    background-color: #ffffff;
+  }
+  td,th{
+    padding: 10px 13px;
+  }
+  th{
+    font-weight: 700;
+  }
+  .ibtn {
+    color: #fee;
+    background: linear-gradient(45deg, #ffc632 0%, #ff8302 100%);
+    border: none;
+    padding: 4px 22px;
+    border: 0px solid #FF9900;
+    border-radius: 3px;
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+}
+.active{
+  border:1px solid rgb(0, 0, 0);
+  background-color: #c0c0c0;
+  border-radius: 2px;
+  padding: 3px 8px;
+}
+.nonactive{
+  border:1px solid rgb(124, 124, 124);
+  background-color: #eeeeee;
+  border-radius: 2px;
+  margin: 1.5px;
+  padding: 3px 8px;
+}
+
+.buttonDisable{
+  border:1px solid rgb(255, 255, 255);
+  background-color: #fff7ee;
+  border-radius: 2px;
+  padding: 3px 8px;
+}
+.alert-danger{
+  padding: 0;
+  background-color:#fff8f8;
+  color:red;
+  border: none;
+  font-weight: 500;
+}
+
+label:not(.label-checkbox){
+  font-weight: 500;
+  color: #999;
+}
+input:not(.input-checkbox),form div select{
+  font-family: 'Montserrat';
+  text-rendering: optimizeLegibility;
+  box-sizing: border-box;
+  display: inline-block;
+  max-width: 100%;
+  color: #838383;
+  width: 100%;
+  padding: 5px;
+  font-size: 12px;
+  border:none;
+  border-bottom: 1.5px solid rgb(203, 203, 203);
+  font-weight: 500;
+  background-color:#ffffff;
+  font-size: 13px;
+}
+input.input-checkbox{
+  margin:5px;
+  margin-top: 8px;
+  font-size: 13px;
+}
+label.label-checkbox{
+  margin:5px;
+  font-weight: 400;
+  color: #333;
+  font-size: 14px;
+}
+.ibtn {
+  font-weight: 500;
+  color: rgb(251, 250, 250);
+  background: linear-gradient(45deg, #ffc632 0%, #ff8302 100%);
+  padding: 4px 10px;
+  border-radius: 3px;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  border: none;
+  border:0.5px solid rgb(182, 227, 219);
+}
+:host ::ng-deep .p-toast-message {
+  font-weight: 500; /* Or any desired font-weight value */
+}
+
+.checkbox-td{
+  padding: 3px;
+}
+
+h6{
+  color: #7a1818;
+  font-size: 15px;
+}

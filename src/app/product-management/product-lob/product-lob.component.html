@@ -1,0 +1,683 @@
+<app-header></app-header>
+<br>
+<div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="data-box col-11">
+                <div class="special-table-container">
+                    <div class="form-area" d-flex>
+                        <h4 _ngcontent-ng-c3236640152="" style="color: brown;">Line of Business</h4>
+                        <select (change)="onSelectChange($event)">
+                            <option value="" selected></option>
+                            <option *ngFor="let ldata of lobdata;let index=index;" [value]="index">{{ldata.product_group_name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="data-box col-11">
+                <div class="special-table-container">
+                    <div class="form-area" d-flex>
+                        <form [formGroup]="form" (ngSubmit)="__add_lob()">
+                            <h4>Add New Line of Business (Product Group)</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.product_group_name.value?true:false" class="labelclass">Product Group Name (LoB)</label>
+                                        <input type="text"
+                                        placeholder="Product Group Name (LoB)"
+                                        name="product_group_name"
+                                        formControlName="product_group_name"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.product_group_name?.touched || is_clicked == true) &&  prgroupform.product_group_name?.invalid">
+                                            <div *ngIf="prgroupform.product_group_name?.errors.required">*Product Group Name Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.product_group_code.value?true:false" class="labelclass">Product Group Code</label>
+                                        <input type="text"
+                                        placeholder="Product Group Code"
+                                        name="product_group_code"
+                                        formControlName="product_group_code"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.product_group_code?.touched || is_clicked == true) && prgroupform.product_group_code?.invalid">
+                                            <div *ngIf="prgroupform.product_group_code?.errors.required">*Product Group Code Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.seq_no_min_length.value) ? true:false" class="labelclass">Min Seq Length</label>
+                                        <input type="number"
+                                        placeholder="Seq Number Min Length"
+                                        name="seq_no_min_length"
+                                        formControlName="seq_no_min_length"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.seq_no_min_length?.touched || is_clicked == true) && prgroupform.seq_no_min_length?.invalid">
+                                            <div *ngIf="prgroupform.seq_no_min_length?.errors.required">*seq_no_min_length Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <h4>Renewal</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.renewal_preprocess.value?true:false" class="labelclass">Renewal Preprocessor</label>
+                                        <input type="text"
+                                        placeholder="Renewal Preprocessor"
+                                        name="renewal_preprocess"
+                                        formControlName="renewal_preprocess"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.renewal_preprocess?.touched || is_clicked == true) &&  prgroupform.renewal_preprocess?.invalid">
+                                            <div *ngIf="prgroupform.renewal_preprocess?.errors.required">*Renewal Preprocess Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.renewal_validator.value?true:false" class="labelclass">Renewal Validator</label>
+                                        <input type="text"
+                                        placeholder="Renewal Validator"
+                                        name="renewal_validator"
+                                        formControlName="renewal_validator"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.renewal_validator?.touched || is_clicked == true) &&  prgroupform.renewal_validator?.invalid">
+                                            <div *ngIf="prgroupform.renewal_validator?.errors.required">*Renewal Validator Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="ifield">
+                                        <input type="checkbox"
+                                        class="input-checkbox"
+                                        placeholder="Renewal Validator"
+                                        name="renewal_count_in_policy_no"
+                                        formControlName="renewal_count_in_policy_no"
+                                        ><label class="label-checkbox">Renewal count is part of policy number</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.renewal_count_in_policy_no?.touched || is_clicked == true) &&  prgroupform.renewal_count_in_policy_no?.invalid">
+                                            <div *ngIf="prgroupform.renewal_count_in_policy_no?.errors.required">*Renewal Validator Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12"><div>
+                                    When "Renewal count is part of product number" is enabled, do not forget to put two 0's (that is 00) as part of policy number suffix.<br> <p><b>Renewal pre-processor</b> should be a module.method that will process the uploaded renewable records.<br>
+                                        Parameters: 
+                                        </p><ul><li>row (renewable record with data field that has all data in json format)</li> <li>product (product object with data)</li> <li>pgroup (product group/LoB)</li></ul>
+                                        Ex: lib/pas.renewal_preprocessor
+                                    <p></p> <p><b>Renewal validator</b> should be a module.method that will be called when the renew API is called (validation at the time of renewal start).<br>
+                                        Parameters: 
+                                        </p><ul><li>row (renewable record with data field that has all data in json format)</li> <li>product (product object with data)</li></ul>
+                                        Ex: api/v1/pas._renewal_validator
+                                    <p></p></div></div>
+                            </div>
+                            <br><h4>Payment</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label>Payment After Effective Date</label>
+                                        <select type ="number" name="payment_after_effective_date" formControlName="payment_after_effective_date">
+                                            <option value="0" selected>Allow</option>
+                                            <option value="1">Block</option>
+                                            <option value="2">Abject Effective Date To Payment Date</option>
+                                            <option value="3">Abject Effective Date To Input Date</option>
+                                            <option value="4">Use policy_effective_date from XNgin</option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.payment_after_effective_date?.touched || is_clicked == true) &&  prgroupform.payment_after_effective_date?.invalid">
+                                            <div *ngIf="prgroupform.payment_after_effective_date?.errors.required">*Payment After Effective Date Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <p>Defaults to allow payment after effective date. If "Adjust effective date to input date" is chosen, the payment API (optionally) shouold include "policy_start_date" input parameter</p>
+                                </div>
+                            </div>
+                            <br><h4>Quote</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-12">
+                                    <div>
+                                        <input type="checkbox" name="enable_quote_no" formControlName="enable_quote_no"  #enablequotetag class="input-checkbox" (click)="quoteclick(enablequotetag,donotresetquote)">
+                                        <label class="label-checkbox">Enable Custom Quote No.</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.enable_quote_no?.touched || is_clicked == true) &&  prgroupform.enable_quote_no?.invalid">
+                                            <div *ngIf="prgroupform.enable_quote_no?.errors.required">*Enable Quote No Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.quote_no_prefix.value?true:false" class="labelclass">Quote No Prefix</label>
+                                        <input type="text"
+                                        placeholder="Quote No Prefix"
+                                        name="quote_no_prefix"
+                                        formControlName="quote_no_prefix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.quote_no_prefix?.touched || is_clicked == true) &&  prgroupform.quote_no_prefix?.invalid">
+                                            <div *ngIf="prgroupform.quote_no_prefix?.errors.required">*Quote No Prefix Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.quote_no_suffix.value?true:false" class="labelclass">Quote No Suffix</label>
+                                        <input type="text"
+                                        placeholder="Quote No Suffix"
+                                        name="quote_no_suffix"
+                                        formControlName="quote_no_suffix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.quote_no_suffix?.touched || is_clicked == true) &&  prgroupform.quote_no_suffix?.invalid">
+                                            <div *ngIf="prgroupform.quote_no_suffix?.errors.required">*Quote No Suffix Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.quote_no_seqkey.value?true:false" class="labelclass">Quote No Sequence Key</label>
+                                        <input type="text"
+                                        placeholder="Quote No Sequence Key"
+                                        name="quote_no_seqkey"
+                                        formControlName="quote_no_seqkey"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.quote_no_seqkey?.touched || is_clicked == true) &&  prgroupform.quote_no_seqkey?.invalid">
+                                            <div *ngIf="prgroupform.quote_no_seqkey?.errors.required">*Quote No Sequence Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <input type="checkbox" name="quote_donot_reset" formControlName="quote_donot_reset"  class="input-checkbox" #donotresetquote>
+                                        <label class="label-checkbox">Do not reset at year end</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.quote_donot_reset?.touched || is_clicked == true) &&  prgroupform.quote_donot_reset?.invalid">
+                                            <div *ngIf="prgroupform.quote_donot_reset?.errors.required">*Required Field</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.quote_no_version.value?true:false" class="labelclass">Quote No Version Pattern</label>
+                                        <input type="text"
+                                        placeholder="Quote No Version Pattern"
+                                        name="quote_no_version"
+                                        formControlName="quote_no_version"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.quote_no_version?.touched || is_clicked == true) &&  prgroupform.quote_no_version?.invalid">
+                                            <div *ngIf="prgroupform.quote_no_version?.errors.required">*Quote No Version Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.quote_id_version.value?true:false" class="labelclass">Quote Id Version Pattern</label>
+                                        <input type="text"
+                                        placeholder="Quote Id Version Pattern"
+                                        name="quote_id_version"
+                                        formControlName="quote_id_version"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.quote_id_version?.touched || is_clicked == true) &&  prgroupform.quote_id_version?.invalid">
+                                            <div *ngIf="prgroupform.quote_id_version?.errors.required">*Quote Id Version Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12"><p>Version number pattern is used when the quotatoin is cloned. The grand-father quote_id will always be used as base quote id
+                                    and a sequence number, one greater than most recent quote will be used as suffix. Even if the cloned quotation is cloned, 
+                                    top most quotation id will always be used as base quotation id (however the data will be from that of the cloned quote) 
+                                </p> <p>
+                                    Version number patten should end with 0's as many as needed to support maximum number. It may be prefixed with a non numeric
+                                    string as separator. <b>Ex: "-00"</b>.</p> <p>
+                                    Please note, the separator for quote_id version must be a valid file name character as this will be used as temporary folder
+                                    name when generating PDF files.</p></div>
+                            </div>
+                            <br><h4>Proposal</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-12">
+                                    <div>
+                                        <input type="checkbox" name="enable_proposal_no" formControlName="enable_proposal_no"  #enableproposaltag class="input-checkbox" (click)="proposalclick(enableproposaltag,donotresetproposal)">
+                                        <label class="label-checkbox">Enable Custom proposal No.</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.enable_proposal_no?.touched || is_clicked == true) &&  prgroupform.enable_proposal_no?.invalid">
+                                            <div *ngIf="prgroupform.enable_proposal_no?.errors.required">*Enable proposal No Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.proposal_no_prefix.value?true:false" class="labelclass">proposal No Prefix</label>
+                                        <input type="text"
+                                        placeholder="proposal No Prefix"
+                                        name="proposal_no_prefix"
+                                        formControlName="proposal_no_prefix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.proposal_no_prefix?.touched || is_clicked == true) &&  prgroupform.proposal_no_prefix?.invalid">
+                                            <div *ngIf="prgroupform.proposal_no_prefix?.errors.required">*proposal No Prefix Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.proposal_no_suffix.value?true:false" class="labelclass">proposal No Suffix</label>
+                                        <input type="text"
+                                        placeholder="proposal No Suffix"
+                                        name="proposal_no_suffix"
+                                        formControlName="proposal_no_suffix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.proposal_no_suffix?.touched || is_clicked == true) &&  prgroupform.proposal_no_suffix?.invalid">
+                                            <div *ngIf="prgroupform.proposal_no_suffix?.errors.required">*proposal No Suffix Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.proposal_no_seqkey.value?true:false" class="labelclass">proposal No Sequence Key</label>
+                                        <input type="text"
+                                        placeholder="proposal No Sequence Key"
+                                        name="proposal_no_seqkey"
+                                        formControlName="proposal_no_seqkey"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.proposal_no_seqkey?.touched || is_clicked == true) &&  prgroupform.proposal_no_seqkey?.invalid">
+                                            <div *ngIf="prgroupform.proposal_no_seqkey?.errors.required">*proposal No Sequence Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="ifield">
+                                        <input type="checkbox" name="proposal_donot_reset" formControlName="proposal_donot_reset"  class="input-checkbox" #donotresetproposal>
+                                        <label class="label-checkbox">Do not reset at year end</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.proposal_donot_reset?.touched || is_clicked == true) &&  prgroupform.proposal_donot_reset?.invalid">
+                                            <div *ngIf="prgroupform.proposal_donot_reset?.errors.required">*Required Field</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><h4>Policy</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-12">
+                                    <div class="ifield">
+                                        <label for="">Custom Policy Number</label>
+                                        <select type="number" name="enable_policy_no" formControlName="enable_policy_no" class="input-checkbox" style="width: 25%;">
+                                            <option value="0">Use Default</option>
+                                            <option value="1">Use Custom Seq No</option>
+                                            <option value="2">Use Custom API Test</option>
+                                            <option value="3">Use Plugin</option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.enable_policy_no?.touched || is_clicked == true) &&  prgroupform.enable_policy_no?.invalid">
+                                            <div *ngIf="prgroupform.enable_policy_no?.errors.required">*Enable Policy No Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_policy_no.value==1">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.policy_no_prefix.value?true:false" class="labelclass">Policy No Prefix</label>
+                                        <input type="text"
+                                        placeholder="Policy No Prefix"
+                                        name="policy_no_prefix"
+                                        formControlName="policy_no_prefix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_no_prefix?.touched || is_clicked == true) &&  prgroupform.policy_no_prefix?.invalid">
+                                            <div *ngIf="prgroupform.policy_no_prefix?.errors.required">*Policy No Prefix Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_policy_no.value==1">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.policy_no_suffix.value?true:false" class="labelclass">Policy No Suffix</label>
+                                        <input type="text"
+                                        placeholder="Policy No Suffix"
+                                        name="policy_no_suffix"
+                                        formControlName="policy_no_suffix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_no_suffix?.touched || is_clicked == true) &&  prgroupform.policy_no_suffix?.invalid">
+                                            <div *ngIf="prgroupform.policy_no_suffix?.errors.required">*Policy No Suffix Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_policy_no.value==1">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.policy_no_seqkey.value?true:false" class="labelclass">Policy No Sequence Key</label>
+                                        <input type="text"
+                                        placeholder="Policy No Sequence Key"
+                                        name="policy_no_seqkey"
+                                        formControlName="policy_no_seqkey"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_no_seqkey?.touched || is_clicked == true) &&  prgroupform.policy_no_seqkey?.invalid">
+                                            <div *ngIf="prgroupform.policy_no_seqkey?.errors.required">*Policy No Sequence Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_policy_no.value==1">
+                                    <div class="ifield">
+                                        <input type="checkbox" name="policy_donot_reset" formControlName="policy_donot_reset"  class="input-checkbox">
+                                        <label class="label-checkbox">Do not reset at year end</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_donot_reset?.touched || is_clicked == true) &&  prgroupform.policy_donot_reset?.invalid">
+                                            <div *ngIf="prgroupform.policy_donot_reset?.errors.required">*Required Field</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="prgroupform.enable_policy_no.value==2">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.policy_no_url.value?true:false" class="labelclass">Policy No API URL</label>
+                                        <input type="text"
+                                        placeholder="Policy No API URL"
+                                        name="policy_no_url"
+                                        formControlName="policy_no_url"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_no_url?.touched || is_clicked == true) &&  prgroupform.policy_no_url?.invalid">
+                                            <div *ngIf="prgroupform.policy_no_url?.errors.required">*Policy No API URL Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_policy_no.value==2">
+                                    <div class="ifield">
+                                        <label  class="labelclass">API Method</label>
+                                        <select type="text" placeholder="API Method" name="policy_no_url_method" formControlName="policy_no_url_method">
+                                        <option value="" disabled selected>Method</option>
+                                        <option value="POST">POST</option>
+                                        <option value="GET">GET</option>
+                                        <option value="OPTION">OPTION</option>
+                                        <option value="PUT">PUT</option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_no_url_method?.touched || is_clicked == true) &&  prgroupform.policy_no_url_method?.invalid">
+                                            <div *ngIf="prgroupform.policy_no_url_method?.errors.required">*API Method Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_policy_no.value==2">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.policy_no_url_auth.value?true:false" class="labelclass">Basic Auth(username:password)</label>
+                                        <input type="text"
+                                        placeholder="Basic Auth(username:password)"
+                                        name="policy_no_url_auth"
+                                        formControlName="policy_no_url_auth"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_no_url_auth?.touched || is_clicked == true) &&  prgroupform.policy_no_url_auth?.invalid">
+                                            <div *ngIf="prgroupform.policy_no_url_auth?.errors.required">*Basic Auth Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" *ngIf="prgroupform.enable_policy_no.value==3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.policy_no_url.value?true:false" class="labelclass">Policy No API URL</label>
+                                        <input type="text"
+                                        placeholder="Policy No API URL"
+                                        name="policy_no_url"
+                                        formControlName="policy_no_url"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.policy_no_url?.touched || is_clicked == true) &&  prgroupform.policy_no_url?.invalid">
+                                            <div *ngIf="prgroupform.policy_no_url?.errors.required">*Policy No API URL Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><h4>Endorsement</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-12">
+                                    <div class="ifield">
+                                        <label for="">Custom Policy Number</label>
+                                        <select type="number" name="enable_endorsement_no" formControlName="enable_endorsement_no" class="input-checkbox" style="width: 25%;">
+                                            <option value="0">Use Default</option>
+                                            <option value="1">Use Custom Seq No</option>
+                                            <option value="2">Use Custom API Test</option>
+                                            <option value="3">Use Plugin</option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.enable_endorsement_no?.touched || is_clicked == true) &&  prgroupform.enable_endorsement_no?.invalid">
+                                            <div *ngIf="prgroupform.enable_endorsement_no?.errors.required">*Enable Endorsement Policy No Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_endorsement_no.value==1">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.endorsement_no_prefix.value?true:false" class="labelclass">Endorsement Policy No Prefix</label>
+                                        <input type="text"
+                                        placeholder="Endorsement Policy No Prefix"
+                                        name="endorsement_no_prefix"
+                                        formControlName="endorsement_no_prefix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_no_prefix?.touched || is_clicked == true) &&  prgroupform.endorsement_no_prefix?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_no_prefix?.errors.required">*Endorsement Policy No Prefix Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_endorsement_no.value==1">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.endorsement_no_suffix.value?true:false" class="labelclass">Endorsement Policy No Suffix</label>
+                                        <input type="text"
+                                        placeholder="Endorsement Policy No Suffix"
+                                        name="endorsement_no_suffix"
+                                        formControlName="endorsement_no_suffix"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_no_suffix?.touched || is_clicked == true) &&  prgroupform.endorsement_no_suffix?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_no_suffix?.errors.required">*Endorsement Policy No Suffix Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_endorsement_no.value==1">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.endorsement_no_seqkey.value?true:false" class="labelclass">Endorsement Policy No Sequence Key</label>
+                                        <input type="text"
+                                        placeholder="Endorsement Policy No Sequence Key"
+                                        name="endorsement_no_seqkey"
+                                        formControlName="endorsement_no_seqkey"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_no_seqkey?.touched || is_clicked == true) &&  prgroupform.endorsement_no_seqkey?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_no_seqkey?.errors.required">*Endorsement Policy No Sequence Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_endorsement_no.value==1">
+                                    <div class="ifield">
+                                        <input type="checkbox" name="endorsement_donot_reset" formControlName="endorsement_donot_reset"  class="input-checkbox">
+                                        <label class="label-checkbox">Do not reset at year end</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_donot_reset?.touched || is_clicked == true) &&  prgroupform.endorsement_donot_reset?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_donot_reset?.errors.required">*Required Field</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="prgroupform.enable_endorsement_no.value==2">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.endorsement_no_url.value?true:false" class="labelclass">Endorsement Policy No API URL</label>
+                                        <input type="text"
+                                        placeholder="Endorsement Policy No API URL"
+                                        name="endorsement_no_url"
+                                        formControlName="endorsement_no_url"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_no_url?.touched || is_clicked == true) &&  prgroupform.endorsement_no_url?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_no_url?.errors.required">*Endorsement Policy No API URL Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_endorsement_no.value==2">
+                                    <div class="ifield">
+                                        <label class="labelclass">API Method</label>
+                                        <select type="text"
+                                        name="endorsement_no_url_method"
+                                        formControlName="endorsement_no_url_method"
+                                        >
+                                            <option value="" disabled selected>Method</option>
+                                            <option value="POST">POST</option>
+                                            <option value="GET">GET</option>
+                                            <option value="OPTION">OPTION</option>
+                                            <option value="PUT">PUT</option>
+                                         </select>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_no_url_method?.touched || is_clicked == true) &&  prgroupform.endorsement_no_url_method?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_no_url_method?.errors.required">*API Method Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="prgroupform.enable_endorsement_no.value==2">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.endorsement_no_url_auth.value?true:false" class="labelclass">Basic Auth(username:password)</label>
+                                        <input type="text"
+                                        placeholder="Basic Auth(username:password)"
+                                        name="endorsement_no_url_auth"
+                                        formControlName="endorsement_no_url_auth"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_no_url_auth?.touched || is_clicked == true) &&  prgroupform.endorsement_no_url_auth?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_no_url_auth?.errors.required">*Basic Auth Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" *ngIf="prgroupform.enable_endorsement_no.value==3">
+                                    <div class="ifield">
+                                        <label *ngIf="prgroupform.endorsement_no_url.value?true:false" class="labelclass">Endorsement Policy No API URL</label>
+                                        <input type="text"
+                                        placeholder="Endorsement Policy No API URL"
+                                        name="endorsement_no_url"
+                                        formControlName="endorsement_no_url"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.endorsement_no_url?.touched || is_clicked == true) &&  prgroupform.endorsement_no_url?.invalid">
+                                            <div *ngIf="prgroupform.endorsement_no_url?.errors.required">*Endorsement Policy No API URL Key Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><h4>Payment Installments</h4>
+                            <div class="row justify-content-start align-items-center container-class">
+                                <div class="col-md-4">
+                                    <div>
+                                        <input type="checkbox" name="enable_installments" formControlName="enable_installments" class="input-checkbox" #installmenttag>
+                                        <label class="label-checkbox">Allow Installments</label>
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.enable_installments?.touched || is_clicked == true) &&  prgroupform.enable_installments?.invalid">
+                                            <div *ngIf="prgroupform.enable_installments?.errors.required">*Installments Should Allow</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <br>
+                                    <p>Allow users to select installment payment option</p>
+                                </div>
+                                <div class="col-md-4" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.minimum_premium_value.value || prgroupform.minimum_premium_value.value==0)?true:false" class="labelclass">Minimum Premium Value</label>
+                                        <input type="number"
+                                        placeholder="Minimum Premium Value"
+                                        name="minimum_premium_value"
+                                        formControlName="minimum_premium_value"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.minimum_premium_value?.touched || is_clicked == true) &&  prgroupform.minimum_premium_value?.invalid">
+                                            <div *ngIf="prgroupform.minimum_premium_value?.errors.required">*Minimum Premium Value Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8" *ngIf="installmenttag.checked">
+                                    <p>Allow installments when premium value is more than this amount.</p>
+                                </div>
+                                <div class="col-md-4" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.max_emi_count.value|| prgroupform.max_emi_count.value==0)?true:false" class="labelclass">Maximum EMI Count</label>
+                                        <input type="number"
+                                        placeholder="Maximum EMI Count"
+                                        name="max_emi_count"
+                                        formControlName="max_emi_count"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.max_emi_count?.touched || is_clicked == true) &&  prgroupform.max_emi_count?.invalid">
+                                            <div *ngIf="prgroupform.max_emi_count?.errors.required">*Maximum EMI Count Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8" *ngIf="installmenttag.checked">
+                                    <p>Maximum number of installments allowed</p>
+                                </div>
+                                <div class="col-md-3" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.emi_setup_fee.value|| prgroupform.emi_setup_fee.value==0)?true:false" class="labelclass">EMI Set Fees Is Required</label>
+                                        <input type="number"
+                                        placeholder="EMI Set Fees"
+                                        name="emi_setup_fee"
+                                        formControlName="emi_setup_fee"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.emi_setup_fee?.touched || is_clicked == true) &&  prgroupform.emi_setup_fee?.invalid">
+                                            <div *ngIf="prgroupform.emi_setup_fee?.errors.required">*EMI Set Fees Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.emi_setup_fee_percent.value|| prgroupform.emi_setup_fee_percent.value==0)?true:false" class="labelclass">EMI Setup Fees Percent</label>
+                                        <input type="number"
+                                        placeholder="EMI Setup Fees Percent"
+                                        name="emi_setup_fee_percent"
+                                        formControlName="emi_setup_fee_percent"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.emi_setup_fee_percent?.touched || is_clicked == true) &&  prgroupform.emi_setup_fee_percent?.invalid">
+                                            <div *ngIf="prgroupform.emi_setup_fee_percent?.errors.required">*EMI Setup Is Required(percent)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.emi_fee_tax_module.value)?true:false" class="labelclass">EMI Fee Tax Module</label>
+                                        <input type="text"
+                                        placeholder="EMI Fee Tax Module"
+                                        name="emi_fee_tax_module"
+                                        formControlName="emi_fee_tax_module"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.emi_fee_tax_module?.touched || is_clicked == true) &&  prgroupform.emi_fee_tax_module?.invalid">
+                                            <div *ngIf="prgroupform.emi_fee_tax_module?.errors.required">*EMI Fee Tax Module Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.late_fee_per_day.value|| prgroupform.late_fee_per_day.value==0)?true:false" class="labelclass">Late Fee Per Day</label>
+                                        <input type="number"
+                                        placeholder="Late Fee Per Day"
+                                        name="late_fee_per_day"
+                                        formControlName="late_fee_per_day"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.late_fee_per_day?.touched || is_clicked == true) &&  prgroupform.late_fee_per_day?.invalid">
+                                            <div *ngIf="prgroupform.late_fee_per_day?.errors.required">*Late Fee Per Day Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.late_fee.value|| prgroupform.late_fee.value==0)?true:false" class="labelclass">Late Fee (fixed)</label>
+                                        <input type="number"
+                                        placeholder="Late Fee (fixed)"
+                                        name="late_fee"
+                                        formControlName="late_fee"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.late_fee?.touched || is_clicked == true) &&  prgroupform.late_fee?.invalid">
+                                            <div *ngIf="prgroupform.late_fee?.errors.required">*Late Fee Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3" *ngIf="installmenttag.checked">
+                                    <div class="ifield">
+                                        <label *ngIf="(prgroupform.suspend_after.value|| prgroupform.suspend_after.value==0)?true:false" class="labelclass">Suspend Policy After (in-days)</label>
+                                        <input type="number"
+                                        placeholder="Suspend Policy After (in-days)"
+                                        name="suspend_after"
+                                        formControlName="suspend_after"
+                                        >
+                                        <div class="alert alert-danger" *ngIf=" (prgroupform.suspend_after?.touched || is_clicked == true) &&  prgroupform.suspend_after?.invalid">
+                                            <div *ngIf="prgroupform.suspend_after?.errors.required">*Suspend After Is Required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="ibtn groupEdit">Submit</button>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br><br>
+<div class="card flex justify-content-center gap-10">
+    <p-toast styleClass="custom-toast"
+    [life]="5000"
+    position="top-right"
+    [showTransformOptions]="'translateY(100%)'" 
+    [showTransitionOptions]="'1000ms'" 
+    [hideTransitionOptions]="'1000ms'" 
+    [showTransformOptions]="'translateX(100%)'"/>
+</div>

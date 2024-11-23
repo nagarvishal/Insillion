@@ -1,0 +1,105 @@
+/* *{
+    font-weight: 500;
+    color:rgb(121, 121, 121);
+    background-color: rgb(255, 238, 219);
+}
+button{
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+div{
+    border:none;
+    outline: none;
+} */
+
+
+*{
+    padding:0px;
+    margin:0px;
+    font-weight: 400;
+  }
+  .container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width:100%;
+    max-width: 100%;
+    background: linear-gradient(to right, rgb(80, 48, 10) 0%, rgb(162, 91, 25));
+    position:relative;
+  }
+  
+  .box1{
+    width:60%;
+    max-height:100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  .box2{
+    width:30%;
+    max-height:100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    position: relative;
+  }
+  .box1-box{
+    position: relative;
+  }
+  .box2-box{
+    position: relative;
+  }
+  
+  .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+  }
+  span{
+    margin-left: 8px;
+    margin-right: 10px;
+  }
+  
+  svg{
+    margin-bottom: 2px;
+  }
+  
+  .dropdown-product{
+    position: absolute;
+    background-color: #ffffff;
+    width: 195px;
+    text-align: left;
+    /* height: 120px; */
+    color: #000000;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 2px;
+    z-index: 2;
+  }
+  .sidebar{
+    position: absolute;
+    background-color: #ffffff;
+    width: 195px;
+    text-align: left;
+    /* height: 120px; */
+    color: #000000;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 2px;
+    z-index: 2;
+    left:197px;
+    top:-10px;
+  }
+  
+  .childbox:hover{
+    background-color: #e8e8e8;
+  }

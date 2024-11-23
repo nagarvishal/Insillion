@@ -1,0 +1,61 @@
+<app-header></app-header>
+
+<br><br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <h6 style="color: gray;font-weight: 600;margin-left: 10px;">{{plugin_name}}</h6>
+            <div class="table-container">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th  rowspan="1" colspan="1" style="width: 20px;">SI.NO.</th>
+                            <th  rowspan="1" colspan="1" style="width: 388px;">File Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 130px;">File Type</th>
+                            <th  rowspan="1" colspan="1" style="width: 130px;">File Extension</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created At</th>
+                            <th  rowspan="1" colspan="1" style="width: 155px;">Last Modified</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created By</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Last Modified By</th>
+                            <th  rowspan="1" colspan="1" style="width: 69px;">Modifing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd" *ngFor="let index=index;let file of fileList">
+                            <td>{{index+1}}</td>
+                            <td style="color: rgb(0, 102, 254);text-decoration: underline;" (click)="fetchFileData(file.file_extension,file.file_name)">{{file.file_name}}</td>
+                            <td>{{file.file_type}}</td>
+                            <td>{{file.file_extension}}</td>
+                            <td>{{file.created_at}}</td>
+                            <td>{{file.updated_at}}</td>
+                            <td>{{file.created_by}}</td>
+                            <td>{{file.updated_by}}</td>
+                            <td style="color:rgb(0, 102, 254);text-decoration: underline;" (click)="fetchFileData(file.file_extension,file.file_name)">Modifie</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="container codeeditor" *ngIf="edithMode">
+    <div class="row justify-content-center">
+        <div class="col-11" style="padding:0px;font-size: 12.5px;">
+            <h6>{{FileName}}</h6>
+            <ace [config]="config" [mode]="mode" [theme]="'monokai'" [(value)]="fileData" style="width:100%;height: 500px;"></ace>
+            <br>
+            <button class="ibtn" (click)="submitFileData()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<p-toast styleClass="custom-toast"
+    [life]="5000"
+    position="top-right"
+    [showTransformOptions]="'translateY(100%)'" 
+    [showTransitionOptions]="'1000ms'" 
+    [hideTransitionOptions]="'1000ms'" 
+    [showTransformOptions]="'translateX(100%)'" />
+

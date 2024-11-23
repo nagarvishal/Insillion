@@ -1,0 +1,533 @@
+<app-header></app-header>
+<br><br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="row justify-content-between">
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    Show <select id="country" [(ngModel)]="limit" name="veryfied" type="number" (change)="__change_limit_search()">
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> Entry
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    <input type="text"  [(ngModel)]="searchString" placeholder="SEARCH" (ngModelChange)="__change_limit_search()">
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th  rowspan="1" colspan="1" style="width: 20px;">SI.NO.</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Broker Id</th>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Broker Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Broker Code</th>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Phone No.</th>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Alt Broker Code</th>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Group Id</th>
+                            <th  rowspan="1" colspan="1" style="width: 60px;">Status</th>
+                            <th  rowspan="1" colspan="1" style="width: 133px;">Author</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created At</th>
+                            <th  rowspan="1" colspan="1" style="width: 155px;">Last Modified At</th>
+                            <th  rowspan="1" colspan="1" style="width: 155px;">Edith</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd" *ngFor="let index=index;let broker of brokerData">
+                            <td>{{offset+index}}</td>
+                            <td style="color: rgb(0, 94, 255);" (click)="__edith_broker(broker)">{{broker.broker_id}}</td>
+                            <td>{{broker.broker_name}}</td>
+                            <td>{{broker.broker_code}}</td>
+                            <td>{{broker.phone_no_1}}</td>
+                            <td>{{broker.alt_broker_code}}</td>
+                            <td>{{broker.group_id}}</td>
+                            <td>{{broker.status}}</td>
+                            <td>{{broker.author}}</td>
+                            <td>{{broker.c_ts}}</td>
+                            <td>{{broker.u_ts}}</td>
+                            <td style="color: rgb(0, 94, 255);" (click)="__edith_broker(broker)">Modify</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="__no_of_button<=7; then thenBlock; else elseBlock"></div>
+                <ng-template #thenBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of __button_array;let index=index" #element (click)="__navigation_click($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==__active_button,
+                                'nonactive':element.textContent!=__active_button
+                            }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-4" style="text-align: end;background-color:#fff7ee;">Showing {{offset}} to {{offset+limit-1}} entries</div>
+                    </div>
+                </ng-template>
+                <ng-template #elseBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of __button_array;let index=index" #element (click)="__navigation_click($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==__active_button && element.textContent!='.........',
+                                'nonactive':element.textContent!=__active_button && element.textContent !='.........',
+                                'buttonDisable':element.textContent=='.........'
+                                }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-3" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} Content</div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="container" *ngIf="__is_edith==false">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="special-table-container">
+                <h6>Add New Broker</h6>
+                <div class="form-area" d-flex>
+                    <form [formGroup]="form" (ngSubmit)="__add_new_broker()">
+                        <div class="row justify-content-start">
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="*Broker Name"
+                                name="broker_name"
+                                formControlName="broker_name"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.broker_name?.touched || is_clicked == true) && brokerform.broker_name?.invalid">
+                                    <div *ngIf="brokerform.broker_name?.errors.required">*Broker Name Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="*Broker Code"
+                                name="broker_code"
+                                formControlName="broker_code"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.broker_code?.touched || is_clicked == true) && brokerform.broker_code?.invalid">
+                                    <div *ngIf="brokerform.broker_code?.errors.required">*Broker Code Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Address(1)"
+                                name="address_1"
+                                formControlName="address_1"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.address_1?.touched || is_clicked == true) && brokerform.address_1?.invalid">
+                                    <div *ngIf="brokerform.address_1?.errors.required">*Address(1) Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Address(2)"
+                                name="address_2"
+                                formControlName="address_2"
+                                >
+                                <div class="alert alert-danger" *ngIf="(brokerform.address_2?.touched || is_clicked == true)&& brokerform.address_2?.invalid">
+                                    <div *ngIf="brokerform.address_2?.errors.required">*Address-2 Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Phone No (1)"
+                                name="phone_no_1"
+                                formControlName="phone_no_1"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.phone_no_1?.touched || is_clicked == true) && brokerform.phone_no_1?.invalid">
+                                    <div *ngIf="brokerform.phone_no_1?.errors.required">*Phone No 1 Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Phone No (2)"
+                                name="phone_no_2"
+                                formControlName="phone_no_2"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.phone_no_2?.touched || is_clicked == true) && brokerform.phone_no_2?.invalid">
+                                    <div *ngIf="brokerform.phone_no_2?.errors.required">*Phone No 2 Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <select  formControlName="status" required>
+                                    <option value="" disabled selected hidden>*Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Non-Active">Non-Active</option>
+                                </select> 
+                                <div class="alert alert-danger" *ngIf=" (brokerform.status?.touched || is_clicked == true)&& brokerform.status?.invalid">
+                                    <div *ngIf="brokerform.status?.errors.required">*Veryfied Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <select  formControlName="deposit_balance_mode" required>
+                                    <option value="" disabled selected hidden>*Select-Deposit-Balance-Mode</option>
+                                    <option value="broker">Broker</option>
+                                    <option value="agent">Agnet</option>
+
+                                </select> 
+                                <div class="alert alert-danger" *ngIf=" (brokerform.deposit_balance_mode?.touched || is_clicked == true) && brokerform.deposit_balance_mode?.invalid">
+                                    <div *ngIf="brokerform.deposit_balance_mode?.errors.required">*Deposit Balance Mode Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Location"
+                                name="location"
+                                formControlName="location"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.location?.touched || is_clicked == true) && brokerform.location?.invalid">
+                                    <div *ngIf="brokerform.location?.errors.required">*Location Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Alt Broker Code"
+                                name="alt_broker_code"
+                                formControlName="alt_broker_code"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.alt_broker_code?.touched || is_clicked == true)&& brokerform.alt_broker_code?.invalid">
+                                    <div *ngIf="brokerform.alt_broker_code?.errors.required">*Alternation Broker Code Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Broker Type"
+                                name="broker_type"
+                                formControlName="broker_type"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.broker_type?.touched || is_clicked == true)&& brokerform.broker_type?.invalid">
+                                    <div *ngIf="brokerform.broker_type?.errors.required">*Broker Type Is Required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="ibtn groupEdit">Submit</button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="__is_edith">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="special-table-container">
+                <h6>Update Broker Details</h6>
+                <div class="form-area" d-flex>
+                    <form [formGroup]="form" (ngSubmit)="__modify_broker_detials()">
+                        <div class="row justify-content-start">
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.broker_name?true:false">Broker Name</label>
+                                <label *ngIf="!__current_edith_broker.broker_name?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="*Broker Name"
+                                name="broker_name"
+                                formControlName="broker_name"
+                                [(ngModel)]="__current_edith_broker.broker_name"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.broker_name?.touched || is_clicked == true) && brokerform.broker_name?.invalid">
+                                    <div *ngIf="brokerform.broker_name?.errors.required">*Broker Name Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.broker_code?true:false">Broker Code</label>
+                                <label *ngIf="!__current_edith_broker.broker_code?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="*Broker Code"
+                                name="broker_code"
+                                formControlName="broker_code"
+                                [(ngModel)]="__current_edith_broker.broker_code"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.broker_code?.touched || is_clicked == true) && brokerform.broker_code?.invalid">
+                                    <div *ngIf="brokerform.broker_code?.errors.required">*Broker Code Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.address_1?true:false">Address(1)</label>
+                                <label *ngIf="!__current_edith_broker.address_1?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="Address(1)"
+                                name="address_1"
+                                formControlName="address_1"
+                                [(ngModel)]="__current_edith_broker.address_1"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.address_1?.touched || is_clicked == true)&& brokerform.address_1?.invalid">
+                                    <div *ngIf="brokerform.address_1?.errors.required">*Address(1) Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.address_2?true:false">Address(2)</label>
+                                <label *ngIf="!__current_edith_broker.address_2?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="Address(2)"
+                                name="address_2"
+                                formControlName="address_2"
+                                [(ngModel)]="__current_edith_broker.address_2"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.address_2?.touched || is_clicked == true) && brokerform.address_2?.invalid">
+                                    <div *ngIf="brokerform.address_2?.errors.required">*Address-2 Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.phone_no_1?true:false">Phone No(1)</label>
+                                <label *ngIf="!__current_edith_broker.phone_no_1?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="Phone No (1)"
+                                name="phone_no_1"
+                                formControlName="phone_no_1"
+                                [(ngModel)]="__current_edith_broker.phone_no_1"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.phone_no_1?.touched || is_clicked == true) && brokerform.phone_no_1?.invalid">
+                                    <div *ngIf="brokerform.phone_no_1?.errors.required">*Phone No 1 Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.phone_no_2?true:false">Phone No(2)</label>
+                                <label *ngIf="!__current_edith_broker.phone_no_2?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="Phone No (2)"
+                                name="phone_no_2"
+                                formControlName="phone_no_2"
+                                [(ngModel)]="__current_edith_broker.phone_no_2"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.phone_no_2?.touched || is_clicked == true) && brokerform.phone_no_2?.invalid">
+                                    <div *ngIf="brokerform.phone_no_2?.errors.required">*Phone No 2 Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label>Status</label>
+                                <select  formControlName="status" required>
+                                    <option [value]="'Active'"  >Active</option>
+                                    <option [value]="'Non-Active'" >Non-Active</option>
+                                </select> 
+                                <div class="alert alert-danger" *ngIf=" (brokerform.status?.touched || is_clicked == true) && brokerform.status?.invalid">
+                                    <div *ngIf="brokerform.status?.errors.required">*Veryfied Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label>Deposit Balance Mode</label>
+                                <select  formControlName="deposit_balance_mode" required>
+                                    <option value="broker" [selected]="__current_edith_broker.deposit_balance_mode=='broker'? true:false">Broker</option>
+                                    <option value="agent" [selected]="__current_edith_broker.deposit_balance_mode=='agent'? true:false">Agent</option>
+                                </select> 
+                                <div class="alert alert-danger" *ngIf=" (brokerform.deposit_balance_mode?.touched || is_clicked == true) && brokerform.deposit_balance_mode?.invalid">
+                                    <div *ngIf="brokerform.deposit_balance_mode?.errors.required">*Deposit Balance Mode Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.location?true:false">Location</label>
+                                <label *ngIf="!__current_edith_broker.location?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="Location"
+                                name="location"
+                                formControlName="location"
+                                [(ngModel)]="__current_edith_broker.location"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.location?.touched || is_clicked == true) && brokerform.location?.invalid">
+                                    <div *ngIf="brokerform.location?.errors.required">*Location Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.alt_broker_code?true:false">Alt Broker Code</label>
+                                <label *ngIf="!__current_edith_broker.alt_broker_code?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="Alt Broker Code"
+                                name="alt_broker_code"
+                                formControlName="alt_broker_code"
+                                [(ngModel)]="__current_edith_broker.alt_broker_code"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.alt_broker_code?.touched || is_clicked == true) && brokerform.alt_broker_code?.invalid">
+                                    <div *ngIf="brokerform.alt_broker_code?.errors.required">*Alternation Broker Code Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <label *ngIf="__current_edith_broker.broker_type?true:false">Broker Type</label>
+                                <label *ngIf="!__current_edith_broker.broker_type?true:false" style="color: #fff7ee;">.</label>
+                                <input type="text"
+                                placeholder="Broker Type"
+                                name="broker_type"
+                                formControlName="broker_type"
+                                [(ngModel)]="__current_edith_broker.broker_type"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (brokerform.broker_type?.touched || is_clicked == true) && brokerform.broker_type?.invalid">
+                                    <div *ngIf="brokerform.broker_type?.errors.required">*Broker Type Is Required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="ibtn groupEdit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="container" *ngIf="__is_edith">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <h6>{{__current_edith_broker.broker_name}} - Users</h6>
+            <div class="table-container">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Email</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">User Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">First Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Last Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Agent Code</th>
+                            <th  rowspan="1" colspan="1" style="width: 150px;">Is Manager</th>
+                            <th  rowspan="1" colspan="1" style="width: 60px;">Underwriter</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Reset Password</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Map Underwriter</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Disable User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd" *ngFor="let index=index;let broker_user of broker_users">
+                            <td style="color: rgb(0, 94, 255);">{{broker_user.email}}</td>
+                            <td>{{broker_user.user_name}}</td>
+                            <td>{{broker_user.first_name}}</td>
+                            <td>{{broker_user.last_name}}</td>
+                            <td>{{broker_user.agent_code}}</td>
+                            <td>{{broker_user.is_manager == 0?"NO":"YES"}}</td>
+                            <td>{{broker_user.underwriter}}</td>
+                            <td style="color: rgb(0, 94, 255);">Reset Password</td>
+                            <td style="color: rgb(0, 94, 255);">Map Underwriter</td>
+                            <td style="color: rgb(0, 94, 255);">Disable User</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="container" *ngIf="__is_edith">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="special-table-container">
+                <h6>Add New Manager/Agent for {{__current_edith_broker.broker_name}}</h6>
+                <h6>Broker User</h6>
+                <div class="form-area" d-flex>
+                    <form [formGroup]="form_bu" (ngSubmit)="__add_broker_user()">
+                        <div class="row justify-content-start">
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="*Email"
+                                name="email"
+                                formControlName="email"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (userform.email?.touched || is_clicked == true)&& userform.email?.invalid">
+                                    <div *ngIf="userform.email?.errors.required">*Email Is Required</div>
+                                    <div *ngIf="userform.email?.errors.pattern">*Email pattern Is Not Valid Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="*Username"
+                                name="user_name"
+                                formControlName="user_name"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (userform.user_name?.touched || is_clicked == true) && userform.user_name?.invalid">
+                                    <div *ngIf="userform.user_name?.errors.required">*Username Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="*First Name"
+                                name="first_name"
+                                formControlName="first_name"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (userform.first_name?.touched || is_clicked == true) && userform.first_name?.invalid">
+                                    <div *ngIf="userform.first_name?.errors.required">*First Name Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="*Last Name"
+                                name="last_name"
+                                formControlName="last_name"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (userform.last_name?.touched || is_clicked == true) && userform.last_name?.invalid">
+                                    <div *ngIf="userform.last_name?.errors.required">*Last Name Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="Agent Code"
+                                name="agent_code"
+                                formControlName="agent_code"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (userform.agent_code?.touched || is_clicked == true) && userform.agent_code?.invalid">
+                                    <div *ngIf="userform.agent_code?.errors.required">*Agent Code Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <input type="text"
+                                placeholder="*Mobile Number"
+                                name="mobile_no"
+                                formControlName="mobile_no"
+                                >
+                                <div class="alert alert-danger" *ngIf=" (userform.mobile_no?.touched || is_clicked == true) && userform.mobile_no?.invalid">
+                                    <div *ngIf="userform.mobile_no?.errors.required">*Mobile Number Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <select  formControlName="veryfied" required>
+                                    <option value="" disabled selected hidden>*Is Veryfied</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select> 
+                                <div class="alert alert-danger" *ngIf=" (userform.veryfied?.touched || is_clicked == true) && userform.veryfied?.invalid">
+                                    <div *ngIf="userform.veryfied?.errors.required">*Veryfied Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;">
+                                <select  formControlName="user_type" required>
+                                    <option value="" disabled selected hidden>*Select-User-Type</option>
+                                    <option value="broker-manager">Broker Manager</option>
+                                    <option value="broker-agent">Broker Agent</option>
+                                </select> 
+                                <div class="alert alert-danger" *ngIf=" (userform.user_type?.touched || is_clicked == true) && userform.user_type?.invalid">
+                                    <div *ngIf="userform.user_type?.errors.required">*User Type Is Required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-bottom: 40px;" *ngIf="form_bu.value.user_type=='broker-agent'">
+                                <select  formControlName="reports_to" required>
+                                    <option value="" disabled selected hidden>*Select </option>
+                                    <option *ngFor="let broker_user of broker_managers;let index=index" value="{{broker_user.email}}">{{broker_user.email}}</option>
+                                </select> 
+                                <!-- <div class="alert alert-danger" *ngIf=" (userform.user_type?.touched || is_clicked == true) && userform.user_type?.invalid">
+                                    <div *ngIf="userform.user_type?.errors.required">*User Type Is Required</div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <button class="ibtn groupEdit" *ngIf="form_bu.value.user_type=='broker-agent'">Add Agent</button>
+                        <button class="ibtn groupEdit" *ngIf="form_bu.value.user_type=='broker-manager'">Add Manager</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-toast styleClass="custom-toast"
+[life]="5000"
+position="top-right"
+[showTransformOptions]="'translateY(100%)'" 
+[showTransitionOptions]="'1000ms'" 
+[hideTransitionOptions]="'1000ms'" 
+[showTransformOptions]="'translateX(100%)'" />

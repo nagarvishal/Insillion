@@ -1,0 +1,227 @@
+<app-header></app-header>
+<br><br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="row justify-content-between">
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    Show <select id="country" [(ngModel)]="limit" name="veryfied" type="number" (change)="changeLimitSearch()">
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> Entry
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    <input type="text"  [(ngModel)]="searchString" placeholder="SEARCH" (ngModelChange)="changeLimitSearch()">
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th  rowspan="1" colspan="1" style="width: 20px;">SI.NO.</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Group Id</th>
+                            <th  rowspan="1" colspan="1" style="width: 388px;">Group Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 60px;">Status</th>
+                            <th  rowspan="1" colspan="1" style="width: 133px;">Author</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created At</th>
+                            <th  rowspan="1" colspan="1" style="width: 155px;">Last Modified</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created By</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Last Modified By</th>
+                            <th  rowspan="1" colspan="1" style="width: 69px;">Modifing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd" *ngFor="let index=index;let group of groupsData">
+                            <td>{{offset+index}}</td>
+                            <td style="color: blue;font-weight: 400;text-decoration: underline;" (click)="edithGroup(group,index)">{{group.group_id}}</td>
+                            <td style="font-weight: 400;">{{group.group_name}}</td>
+                            
+                            <td>{{group.isactive|changeBoolean}}</td>
+                            
+                            <td>admin</td>
+                            <td>{{group.created_at}}</td>
+                            <td>{{group.updated_at}}</td>
+                            <td>{{group.created_by}}</td>
+                            <td>{{group.updated_by}}</td>
+                            <td><button class="ibtn groupEdit" (click)="edithGroup(group,index)">Edith</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="__no_of_button<=7; then thenBlock; else elseBlock"></div>
+                <ng-template #thenBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton,
+                                'nonactive':element.textContent!=activeButton
+                            }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-4" style="text-align: end;background-color:#ffffff;">Showing {{offset}} to {{offset+limit-1}} entries</div>
+                    </div>
+                </ng-template>
+                <ng-template #elseBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton && element.textContent!='.........',
+                                'nonactive':element.textContent!=activeButton && element.textContent !='.........',
+                                'buttonDisable':element.textContent=='.........'
+                                }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-3" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} Content</div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+
+<div class="container" *ngIf="isEdith==false">
+    <div class="row justify-content-center">
+        <div class="data-box col-11" style="background-color:#ffffff;">
+            <div class="row justify-content-between">
+                <h6>Add User</h6>
+                <form [formGroup]="form" (ngSubmit)="addGroup()">
+                    <div class="row">
+                        <div class="col-4">
+                                <label>Group Name</label>
+                                <input type="text"
+                                placeholder="Group Name"
+                                name="group_name"
+                                formControlName="group_name"
+                                >
+                                <div class="alert alert-danger" *ngIf="group_name?.touched && group_name?.invalid">
+                                    <div *ngIf="group_name?.errors.required">*Username Is Required</div>
+                                </div>
+                        </div>
+                        <div class="col-4">
+                            <label for="">Is Active</label>
+                            <select  formControlName="isactive" required>
+                                <option value="" disabled selected hidden>Select an option</option>
+                                <option value="true">true</option>
+                                <option value="false">false</option>
+                            </select> 
+                            <div class="alert alert-danger" *ngIf="isactive?.touched && isactive?.invalid">
+                                <div *ngIf="isactive?.errors.required">*Veryfied Is Required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="ibtn" [disabled]="form.invalid">Add Group</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  
+
+<div class="container" *ngIf="isEdith==true" style="z-index: 5;">
+    <div class="row justify-content-center">
+        <div class="data-box col-11" style="padding-top:0px;background-color: #ffffff;">
+            <div class="table-container">
+                <div class="row justify-content-between">
+                    <h6 style="padding-top:20px">Update User</h6>
+                    <form [formGroup]="form" (ngSubmit)="updateGroup()">
+                        <div class="row">
+                            <div class="col-4">
+                                    <label>Group Name</label><br> 
+                                    <input type="text"
+                                    placeholder="Group Name"
+                                    name="group_name"
+                                    [(ngModel)]="currentEdithGroup.group_name"
+                                    formControlName="group_name"
+                                    >
+                                    <div class="alert alert-danger" *ngIf="group_name?.touched && group_name?.invalid">
+                                        <div *ngIf="group_name?.errors.required">*Username Is Required</div>
+                                    </div>
+                            </div>
+                            <div class="col-4">
+                                <label for="">Is Active</label><br>
+                                <select  formControlName="isactive" required>
+                                    <option value="" disabled selected hidden>Select an option</option>
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
+                                </select> 
+                                <div class="alert alert-danger" *ngIf="isactive?.touched && isactive?.invalid">
+                                    <div *ngIf="isactive?.errors.required">*Veryfied Is Required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="ibtn" [disabled]="form.invalid">Update Group</button>
+                    </form>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-4" #parentElement>
+                        <h6>Add Users</h6>
+                        <form #myForm="ngForm" (ngSubmit)="submitEmailForm(myForm)">
+                            <input type="text" placeholder="E-Mail" name="myField" ngModel #myField="ngModel" required [(ngModel)]="searchUserEmail" (ngModelChange)="userSearchByEmail()" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" #inputforusers>
+                            <button class="ibtn" stype="submit" [disabled]="!myField.valid" >Add User</button>
+                            <div   *ngIf="searchUserEmail!='' && users.length > 0"  style="border:1px solid rgb(159, 159, 159);border-radius: 2px;position:absolute;z-index: 10;color:gray;background-color: rgb(255, 255, 255);padding:4px;width:inherit;"
+                            [ngStyle]="{
+                                'width.px':inputforusers.offsetWidth
+                            }"
+                            >
+                                <option value="vishal" #optionElement style="padding:4px;" *ngFor="let index=index;let user of users" (click)="clickOnOption(index,user.email,optionElement)">{{user.email}} [{{user.user_name}}]</option>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div style="display: flex;flex-wrap: wrap;">
+                    <div *ngFor="let index=index;let user of groupUsers" style="margin: 5px;width: 250px;color:rgb(105, 105, 105);font-weight: 500;">
+                        {{user.email}}<button [ngStyle]="commonServices.crossButtonStyle" (click)="removeUserFromGroup(user,index)">x</button>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container" *ngIf="isEdith==true">
+    <div class="row justify-content-center">
+        <div class="data-box col-11" style="background-color: #ffffff;">
+            <div class="table-container">
+                <h6>Update Previleges</h6>
+                <div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+                    <div style="width:250px;" *ngFor="let index=index;let previlge of previleges">
+                        <input type="checkbox" class="input-checkbox" [checked]="isChecked(previlge,index)" (click)="onCheckboxClick($event,previlge,index)">
+                        <label class="label-checkbox" style="font-weight: 500;color: rgb(105, 105, 105);">{{previlge.privilege_name|capitalisation}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<br><br>
+<div class="card flex justify-content-center gap-10">
+    <p-toast styleClass="custom-toast"
+    [life]="5000"
+    position="top-right"
+    [showTransformOptions]="'translateY(100%)'" 
+    [showTransitionOptions]="'1000ms'" 
+    [hideTransitionOptions]="'1000ms'" 
+    [showTransformOptions]="'translateX(100%)'" />
+    <button type="button" pButton pRipple (click)="showSuccess('Task Sucessfully Executed')" label="Success" class="btn btn-secondary">Sucess</button>
+    <button type="button" pButton pRipple (click)="showInfo('For Yor Information')" label="Info" class="btn btn-secondary">Info</button>
+    <button type="button" pButton pRipple (click)="showWarn('This is a Warning')" label="Warn" class="btn btn-secondary">Warning</button>
+    <button type="button" pButton pRipple (click)="showError('Error is coming in System')" label="Error" class="btn btn-secondary">Error</button>
+</div>
+
+

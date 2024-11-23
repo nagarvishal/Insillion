@@ -1,0 +1,120 @@
+
+<app-header></app-header>
+<br><br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="row justify-content-between">
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    Show <select id="country" [(ngModel)]="limit" name="veryfied" type="number" (change)="changeLimitSearch()">
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> Entry
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    <input type="text"  [(ngModel)]="searchString" placeholder="SEARCH" (ngModelChange)="changeLimitSearch()">
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th  rowspan="1" colspan="1" style="width: 50px;">SI.NO.</th>
+                            <th  rowspan="1" colspan="1" style="width: 180px;">Workflow Id</th>
+                            <th  rowspan="1" colspan="1" style="width: 200px;">Workflow Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 60px;">Type</th>
+                            <th  rowspan="1" colspan="1" style="width: 133px;">Author</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created At</th>
+                            <th  rowspan="1" colspan="1" style="width: 200px;">Last Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd" *ngFor="let index=index;let workflow of workflowData">
+                            <td>{{offset+index}}</td>
+                            <td style="color: rgb(0, 102, 254);font-weight: 500;" (click)="activeworkflow(2,index)">{{workflow.wf_id}}</td>
+                            <td style="text-decoration: underline;color: rgb(0, 102, 254);font-weight: 500;" (click)="activeworkflow(2,index)">{{workflow.wf_name}}</td>
+                            <td>{{workflow.wf_type}}</td>
+                            <td>{{workflow.author}}</td>
+                            <td>{{workflow.c_ts}}</td>
+                            <td>{{workflow.u_ts}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="no_of_button<=7; then thenBlock; else elseBlock"></div>
+                <ng-template #thenBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton,
+                                'nonactive':element.textContent!=activeButton
+                            }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-4" style="text-align: end;background-color:#ffffff;">Showing {{offset}} to {{offset+limit-1}} entries</div>
+                    </div>
+                </ng-template>
+                <ng-template #elseBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton && element.textContent!='.........',
+                                'nonactive':element.textContent!=activeButton && element.textContent !='.........',
+                                'buttonDisable':element.textContent=='.........'
+                                }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-3" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} Content</div>
+                    </div>
+                </ng-template>
+
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container codeeditor" *ngIf="edithMode">
+    <div class="row justify-content-center">
+        <div class="col-11" style="padding:0px;font-size: 12.5px;">
+            <ace [config]="config" [mode]="mode" [theme]="'monokai'" [(value)]="fileData" style="width:100%;height: 500px;"></ace>
+            <br>
+            <button class="ibtn" (click)="submitChangedFile()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<div class="container codeeditor" *ngIf="!edithMode">
+    <div class="row justify-content-center">
+        <div class="col-11" style="padding:0px">
+            <div style="margin-top: 20px; cursor: pointer;" (click)="activeworkflow(1,-1)"><i class="fa fa-plus"></i> <h6><span style="font-size: 22px;font-weight: bold;">+</span>Add New Workflow</h6>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container codeeditor" *ngIf="addMode">
+    <div class="row justify-content-center">
+        <div class="col-11" style="padding:0px;font-size: 12.5px;">
+            <ace [config]="config" [mode]="mode" [theme]="'monokai'" [(value)]="fileData" style="width:100%;height: 500px;"></ace>
+            <br>
+            <button class="ibtn" (click)="submitFileData()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<p-toast styleClass="custom-toast"
+[life]="5000"
+position="top-right"
+[showTransformOptions]="'translateY(100%)'" 
+[showTransitionOptions]="'1000ms'" 
+[hideTransitionOptions]="'1000ms'" 
+[showTransformOptions]="'translateX(100%)'" />

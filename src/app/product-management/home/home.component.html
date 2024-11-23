@@ -1,0 +1,31 @@
+<app-header></app-header>
+<br><br>
+<div class="container">
+    <div class="row justify-content-start">
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3 product" 
+        *ngFor="let product of products;let index=index"
+        [ngStyle]="{
+            background:'linear-gradient('+color1[index]+' 0%, '+color2[index]+')'
+        }"
+        
+        >
+        <div class="topbar">
+            <a style="margin-right:5px;text-decoration: none;" [routerLink]="'/product-management/product'" [queryParams]="{'product_id':product.product_id}">Manage Products</a> -
+            <a styke="margin-left:5px" [routerLink]="">Quotes</a>
+        </div>
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-8" style="font-size: 15px;">
+                    {{product.product_name}}
+                </div>
+                <div class="col-4">
+                    <div class="bg-sblue" style="border-radius: 50%; border: 2px solid rgb(255, 255, 255); width: 80px; height: 80px; font-size: 40px; color: rgb(0, 0, 0); opacity: 0.5; background: rgb(255, 255, 255); padding-top: 8px; margin: 0px 10px 20px; box-shadow: rgba(64, 64, 64, 0.8) 4px 4px 4px 0px;">
+                        <i [ngClass]="product.product_icon+' fs-1'" class="fa"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

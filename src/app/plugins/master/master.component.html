@@ -1,0 +1,307 @@
+
+<app-header></app-header>
+<br><br><br>
+<div class="container-fluid" style="margin-left:3%;">
+    <p style="font-size: 16px;font-weight: 500;color: #44a;">Master</p>
+    <div class="row justify-content-between">
+        <div class="data-box col-8" style="padding-top:45px;padding-bottom: 45px;">
+            <div class="form-area" d-flex>
+                <div class="row justify-content-start">
+                    <div class="col-sm-4 col-md-3" style="padding-left:15px;padding-right:15px;margin-bottom: 20px;position: relative;">
+                        <label class="labelclass" *ngIf="group?true:false">Group</label>
+                        <select name="group" type="text" id="" style="width: 100%;" [(ngModel)]="group" (ngModelChange)="fetchsubgroups()">
+                            <option value="" disabled selected hidden>Group</option>
+                            <option  *ngFor="let data of groups;let index=index;"  value="{{data}}">{{data}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 col-md-3" style="padding-left:15px;padding-right:15px;margin-bottom: 20px;position: relative;">
+                        <label class="labelclass" *ngIf="subgroup?true:false">Sub-Group</label>
+                        <select name="" id="" style="width: 100%;" name="subgroup" [(ngModel)]="subgroup" (ngModelChange)="fetchsubsubgroups()">
+                            <option value="" disabled selected hidden>Sub-Group</option>
+                            <option  *ngFor="let data of subgroups;let index=index;"  value="{{data}}">{{data}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 col-md-3" style="padding-left:15px;padding-right:15px;margin-bottom: 20px;position: relative;">
+                        <label class="labelclass" *ngIf="subsubgroup?true:false">Sub-Sub-Group</label>
+                        <select name="" id="" style="width: 100%;" name="subsubgroup" [(ngModel)]="subsubgroup" (ngModelChange)="fetchData()">
+                            <option value="" disabled selected hidden>Sub-Sub Group</option>
+                            <option  *ngFor="let data of subsubgroups;let index=index;"  value="{{data}}">{{data}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+          <div *ngIf="masterArray.length>0?true:false">
+            <br>
+            <br>
+            <br>
+            <div class="row justify-content-between">
+              <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                  Show <select id="country" [(ngModel)]="limit" name="veryfied" type="number" (change)="changeLimit()" style="width: 50px;">
+                      <option value="3">3</option>
+                      <option value="5">5</option>
+                      <option value="7">7</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                  </select> Entry
+              </div>
+              <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                  <input type="text"  [(ngModel)]="searchString" placeholder="SEARCH" (ngModelChange)="changeSearch()">
+              </div>
+            </div>
+            <div class="table-container">
+              <table class="table table-sm">
+                <thead style="background-color: rgb(221, 221, 221);">
+                  <tr>
+                      <th  rowspan="1" colspan="1" style="width: 50px;">SI.NO.</th>
+                      <th  rowspan="1" colspan="1" style="width: 180px;">master_id</th>
+                      <th  rowspan="1" colspan="1" style="width: 200px;">group_name</th>
+                      <th  rowspan="1" colspan="1" style="width: 60px;">group_name_1</th>
+                      <th  rowspan="1" colspan="1" style="width: 133px;">group_name_2</th>
+                      <th  rowspan="1" colspan="1" style="width: 104px;">name</th>
+                      <th  rowspan="1" colspan="1" style="width: 200px;">value</th>
+                      <th  rowspan="1" colspan="1" style="width: 100px;">description</th>
+                      <th  rowspan="1" colspan="1" style="width: 100px;">status</th>
+                      <th  rowspan="1" colspan="1" style="width: 100px;">proxy</th>
+                      <th  rowspan="1" colspan="1" style="width: 100px;">author</th>
+                      <th  rowspan="1" colspan="1" style="width: 100px;">c_ts</th>
+                      <th  rowspan="1" colspan="1" style="width: 100px;">ip</th>
+                      <th  rowspan="1" colspan="1" style="width: 100px;">u_ts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of masterData;let index=index">
+                    <td>{{index+this.offset}}</td>
+                    <td style="color:blue;" (click)="edithMaster(index)">{{data.master_id}}</td>
+                    <td>{{data.group_name}}</td>
+                    <td>{{data.group_name_1}}</td>
+                    <td>{{data.group_name_2}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.value}}</td>
+                    <td>{{data.description}}</td>
+                    <td>{{data.status==0?"Active":"Deleted"}}</td>
+                    <td>{{data.proxy}}</td>
+                    <td>{{data.author}}</td>
+                    <td>{{data.c_ts}}</td>
+                    <td>{{data.ip}}</td>
+                    <td>{{data.u_ts}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="no_of_button<=7; then thenBlock; else elseBlock"></div>
+              <ng-template #thenBlock>
+                <div class="row justify-content-between" style="margin-right:10px">
+                  <div class="col-7" #parent>
+                    <button class="nonactive">Previous</button>
+                    <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                      [ngClass]="{
+                          'active':element.textContent==activeButton,
+                          'nonactive':element.textContent!=activeButton
+                      }"
+                      >{{button}}</button>
+                      <button class="nonactive">Next</button>
+                  </div>
+                  <div class="col-4" style="text-align: end;background-color:#ffffff;">Showing {{offset}} to {{offset+limit-1}} entries</div>
+                </div>
+              </ng-template>
+              <ng-template #elseBlock>
+                <div class="row justify-content-between" style="margin-right:10px">
+                  <div class="col-7" #parent>
+                      <button class="nonactive">Previous</button>
+                      <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                      [ngClass]="{
+                          'active':element.textContent==activeButton && element.textContent!='.........',
+                          'nonactive':element.textContent!=activeButton && element.textContent !='.........',
+                          'buttonDisable':element.textContent=='.........'
+                          }"
+                      >{{button}}</button>
+                      <button class="nonactive">Next</button>
+                  </div>
+                  <div class="col-3" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} Content</div>
+              </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+</div>
+
+<br><br><br>
+<div class="container-fluid" style="margin-left:3%;" *ngIf="isEdith">
+    <p style="font-size: 16px;font-weight: 500;color: #44a;">Edith Master</p>
+    <div class="row justify-content-between">
+        <div class="data-box col-8" style="padding-top:45px;padding-bottom: 45px;">
+            <div class="form-area">
+                <form [formGroup]="edithform" (ngSubmit)="__edith_Master()">
+                    <div class="row justify-content-start">
+                      <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                        <label class="labelclass" *ngIf="edithMasterForm.group_name.value?true:false">Group Name</label>
+                        <input type="text"
+                              placeholder="Group Name"
+                              name="group_name"
+                              formControlName="group_name"
+                        >
+                        <div class="alert alert-danger" *ngIf="(edithMasterForm.group_name?.touched || clicked)&& edithMasterForm.group_name?.invalid">
+                            <div *ngIf="edithMasterForm.group_name?.errors.required">*Group Is Required</div>
+                        </div>
+                      </div>
+                      <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                        <label class="labelclass" *ngIf="edithMasterForm.group_name_1.value?true:false">Sub Group Name</label>
+                        <input type="text"
+                            placeholder="Sub Group Name"
+                            name="group_name_1"
+                            formControlName="group_name_1"
+                            >
+                      </div>
+                      <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                        <label class="labelclass" *ngIf="edithMasterForm.group_name_2.value?true:false">Sub-Sub Group Name</label>
+                        <input type="text"
+                            placeholder="Sub-Sub Group Name"
+                            name="group_name_2"
+                            formControlName="group_name_2"
+                            >
+                      </div>
+                      <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                          <label class="labelclass" *ngIf="edithMasterForm.name.value?true:false">Name</label>
+                          <input type="text"
+                              placeholder="Name"
+                              name="name"
+                              formControlName="name"
+                              >
+                          <div class="alert alert-danger" *ngIf="(edithMasterForm.name?.touched || clicked)&& edithMasterForm.name?.invalid">
+                              <div *ngIf="edithMasterForm.name?.errors.required">*Name Is Required</div>
+                          </div>
+                      </div>
+                      <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                          <label class="labelclass" *ngIf="edithMasterForm.value.value?true:false">Value</label>
+                          <input type="text"
+                              placeholder="Value"
+                              name="value"
+                              formControlName="value"
+                          >
+                          <div class="alert alert-danger" *ngIf="(edithMasterForm.value?.touched || clicked)&& edithMasterForm.value?.invalid">
+                              <div *ngIf="edithMasterForm.value?.errors.required">*Value Is Required</div>
+                          </div>
+                      </div>
+                      <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                          <label class="labelclass" *ngIf="edithMasterForm.description.value?true:false">Description</label>
+                          <input type="text"
+                              placeholder="Description"
+                              name="description"
+                              formControlName="description"
+                              >
+                      </div>
+                      <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position: relative;">
+                          <label class="labelclass">Status</label>
+                          <select type="number" name="" id="" style="width: 100%;" name="status" formControlName="status">
+                              <option value = 0>Active</option>
+                              <option value = 1>Delete</option>
+                          </select>
+                          <div class="alert alert-danger" *ngIf="(edithMasterForm.status?.touched || clicked)&& edithMasterForm.status?.invalid">
+                              <div *ngIf="edithMasterForm.status?.errors.required">*Value Is Required</div>
+                          </div>
+                      </div>
+                    </div>
+                    <div style="padding-left:15px;">
+                      <button class="ibtn">Edith Master</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" style="margin-left:3%;" *ngIf="!isEdith">
+    <p style="font-size: 16px;font-weight: 500;color: #44a;">Add Master</p>
+    <div class="row justify-content-between">
+        <div class="data-box col-8" style="padding-top:45px;padding-bottom: 45px;">
+            <div class="form-area">
+                <form [formGroup]="form" (ngSubmit)="__add_Master()">
+                    <div class="row justify-content-start">
+                        <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                            <label class="labelclass" *ngIf="masterform.group_name.value?true:false">Group Name</label>
+                            <input type="text"
+                                placeholder="Group Name"
+                                name="group_name"
+                                formControlName="group_name"
+                                >
+                                <div class="alert alert-danger" *ngIf="(masterform.group_name?.touched || clicked)&& masterform.group_name?.invalid">
+                                    <div *ngIf="masterform.group_name?.errors.required">*Group Is Required</div>
+                                </div>
+                        </div>
+                        <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                            <label class="labelclass" *ngIf="masterform.group_name_1.value?true:false">Sub Group Name</label>
+                            <input type="text"
+                                placeholder="Sub Group Name"
+                                name="group_name_1"
+                                formControlName="group_name_1"
+                                >
+                        </div>
+                        <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                            <label class="labelclass" *ngIf="masterform.group_name_2.value?true:false">Sub-Sub Group Name</label>
+                            <input type="text"
+                                placeholder="Sub-Sub Group Name"
+                                name="group_name_2"
+                                formControlName="group_name_2"
+                                >
+                        </div>
+                        <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                            <label class="labelclass" *ngIf="masterform.name.value?true:false">Name</label>
+                            <input type="text"
+                                placeholder="Name"
+                                name="name"
+                                formControlName="name"
+                                >
+                            <div class="alert alert-danger" *ngIf="(masterform.name?.touched || clicked)&& masterform.name?.invalid">
+                                <div *ngIf="masterform.name?.errors.required">*Name Is Required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                            <label class="labelclass" *ngIf="masterform.value.value?true:false">Value</label>
+                            <input type="text"
+                                placeholder="Value"
+                                name="value"
+                                formControlName="value"
+                            >
+                            <div class="alert alert-danger" *ngIf="(masterform.value?.touched || clicked)&& masterform.value?.invalid">
+                                <div *ngIf="masterform.value?.errors.required">*Value Is Required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position:relative;">
+                            <label class="labelclass" *ngIf="masterform.description.value?true:false">Description</label>
+                            <input type="text"
+                                placeholder="Description"
+                                name="description"
+                                formControlName="description"
+                                >
+                        </div>
+                        <div class="col-md-3" style="margin-bottom: 45px;padding-left:15px;padding-right:15px;position: relative;">
+                            <label class="labelclass">Status</label>
+                            <select type="number" name="" id="" style="width: 100%;" name="status" formControlName="status">
+                                <option value = 0>Active</option>
+                                <option value = 1>Delete</option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(masterform.status?.touched || clicked)&& masterform.status?.invalid">
+                                <div *ngIf="masterform.status?.errors.required">*Value Is Required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding-left:15px;">
+                        <button class="ibtn">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <p-toast styleClass="custom-toast"
+    [life]="5000"
+    position="top-right"
+    [showTransformOptions]="'translateY(100%)'" 
+    [showTransitionOptions]="'1000ms'" 
+    [hideTransitionOptions]="'1000ms'" 
+    [showTransformOptions]="'translateX(100%)'" />
+

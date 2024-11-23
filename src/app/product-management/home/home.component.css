@@ -1,0 +1,26 @@
+.product{
+    margin:20px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color:white;
+    min-height: 100px;
+}
+
+.product .topbar{
+    width:90%;
+    margin:10px auto;
+    align-items: center;
+}
+.product .topbar a{
+    color: white;
+}
+.bg-sblue{
+    text-align: center;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px / 1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+}
+

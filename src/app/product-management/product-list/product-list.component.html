@@ -1,0 +1,89 @@
+<app-header></app-header>
+<br><br>
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="data-box col-11">
+            <div *ngIf="products.length>0?true:false">
+                <div class="row justify-content-between">
+                  <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                      Show <select id="country" [(ngModel)]="limit" name="veryfied" type="number" (change)="changeLimit()" style="width: 50px;">
+                          <option value="3">3</option>
+                          <option value="5">5</option>
+                          <option value="7">7</option>
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                      </select> Entry
+                  </div>
+                  <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                      <input type="text"  [(ngModel)]="searchString" placeholder="SEARCH" (ngModelChange)="changeSearch()">
+                  </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-sm">
+                        <thead style="background-color: rgb(221, 221, 221);">
+                            <th  rowspan="1" colspan="1" style="width: 50px;">SI.NO.</th>
+                            <th  rowspan="1" colspan="1" style="width: 180px;">Product Id</th>
+                            <th  rowspan="1" colspan="1" style="width: 200px;">WF ID</th>
+                            <th  rowspan="1" colspan="1" style="width: 60px;">Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 133px;">Display Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">GR. ID</th>
+                            <th  rowspan="1" colspan="1" style="width: 200px;">Valid From</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Valid Till</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Product Type</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Action</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of productData;let index=index">
+                                <td>{{index+this.offset}}</td>
+                                <td style="color:blue;" [routerLink]="'/product-management/product'" [queryParams]="{'product_id':product.product_id}">{{product.product_id}}</td>
+                                <td>{{product.product_name}}</td>
+                                <td>{{product.wf_id}}</td>
+                                <td>{{product.display_name}}</td>
+                                <td>{{product.product_group_id}}</td>
+                                <td>{{product.valid_from}}</td>
+                                <td>{{product.valid_till}}</td>
+                                <td>{{product.product_type?product.product_type:"-"}}</td>
+                                <td>Edith</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="no_of_button<=7; then thenBlock; else elseBlock"></div>
+                    <ng-template #thenBlock>
+                      <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                          <button class="nonactive">Previous</button>
+                          <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton,
+                                'nonactive':element.textContent!=activeButton
+                            }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-4" style="text-align: end;background-color:#ffffff;">Showing {{offset}} to {{offset+limit-1}} entries</div>
+                      </div>
+                    </ng-template>
+                    <ng-template #elseBlock>
+                      <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton && element.textContent!='.........',
+                                'nonactive':element.textContent!=activeButton && element.textContent !='.........',
+                                'buttonDisable':element.textContent=='.........'
+                                }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-3" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} Content</div>
+                    </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

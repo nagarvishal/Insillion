@@ -1,0 +1,41 @@
+.data-box {
+    /* Styles for the box */
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 2px;
+  }
+  .table-container {
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent content wrapping */
+  }
+  
+  tr,td,thead,tbody,th{
+    border: none;
+    box-sizing: content-box;
+    font-weight: 400;
+    color: rgb(122, 122, 122);
+  }
+  td,th{
+    padding: 8px 20px;
+  }
+  th{
+    font-weight: 500;
+    background-color: rgb(221, 221, 221);
+  }
+  h6{
+    color: rgb(0, 102, 254);
+    font-size: 16px;
+  }
+  .ibtn {
+    color: rgb(251, 250, 250);
+    background: linear-gradient(45deg, #ffc632 0%, #ff8302 100%);
+    padding: 4px 10px;
+    border-radius: 3px;
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    border: none;
+    border:0.5px solid rgb(182, 227, 219);
+    padding: 5px 10px;
+    font-size: 14px;
+}

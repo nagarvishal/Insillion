@@ -1,0 +1,162 @@
+
+.data-box {
+    /* Styles for the box */
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 2px;
+  }
+  .table-container {
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent content wrapping */
+  }
+  .special-table-container{
+    overflow-x: scroll;
+  }
+  
+  tr,td,thead,tbody,th{
+    border: none;
+    box-sizing: content-box;
+    font-weight: 500;
+    color: rgb(122, 122, 122);
+    background-color: #ffffff;
+  }
+  td,th{
+    padding: 10px 13px;
+  }
+  th{
+    font-weight: 700;
+  }
+  .ibtn {
+    color: #fee;
+    background: linear-gradient(45deg, #ffc632 0%, #ff8302 100%);
+    border: none;
+    padding: 4px 22px;
+    border: 0px solid #FF9900;
+    border-radius: 3px;
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+}
+.active{
+  border:1px solid rgb(0, 0, 0);
+  background-color: #c0c0c0;
+  border-radius: 2px;
+  padding: 3px 8px;
+}
+.nonactive{
+  border:1px solid rgb(124, 124, 124);
+  background-color: #eeeeee;
+  border-radius: 2px;
+  margin: 1.5px;
+  padding: 3px 8px;
+}
+
+.buttonDisable{
+  border:1px solid rgb(255, 255, 255);
+  background-color: #fff7ee;
+  border-radius: 2px;
+  padding: 3px 8px;
+}
+.alert-danger{
+  padding: 0;
+  background-color:#faf9ff;
+  color:red;
+  border: none;
+  font-weight: 500;
+  position: absolute;
+}
+
+label:not(.label-checkbox){
+  font-weight: 500;
+  color: #999;
+  font-size: 13px;
+  position: absolute;
+  top: 0px;
+}
+input:not(.input-checkbox),form div select{
+  font-family: 'Montserrat';
+  text-rendering: optimizeLegibility;
+  box-sizing: border-box;
+  display: inline-block;
+  max-width: 100%;
+  color: #565656;
+  width: 100%;
+  padding: 5px;
+  font-size: 12px;
+  border:none;
+  border-bottom: 1.5px solid rgb(203, 203, 203);
+  font-weight: 500;
+  background-color:#faf9ff;
+  font-size: 13px;
+}
+input:focus{
+    color: #333;
+}
+input.input-checkbox{
+  margin:5px;
+  margin-top: 8px;
+  font-size: 13px;
+}
+label.label-checkbox{
+    font-size: 13px;
+    font-weight: 500;
+    color: #787878;
+}
+.ibtn {
+  font-weight: 500;
+  color: rgb(251, 250, 250);
+  background: linear-gradient(45deg, #ffc632 0%, #ff8302 100%);
+  padding: 4px 10px;
+  border-radius: 3px;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  border: none;
+  border:0.5px solid rgb(182, 227, 219);
+}
+:host ::ng-deep .p-toast-message {
+  font-weight: 500; /* Or any desired font-weight value */
+}
+
+.checkbox-td{
+  padding: 3px;
+}
+
+h4{
+    font-size: 1.3em;
+    font-weight: 500;
+    padding: 8px 0px;
+    margin: 0px 0px;
+    color: #44a;
+}
+.container-class{
+    background-color: #faf9ff;
+    box-shadow:0px 6px 6px 0px rgba(0,0,0,.005);
+    padding: 22px 25px;
+}
+
+.ifield{
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    --dt-row-selected: 13,110,253;
+    --dt-row-selected-text: 255,255,255;
+    --dt-row-selected-link: 9,10,11;
+    --dt-row-stripe: 0,0,0;
+    --dt-row-hover: 0,0,0;
+    --dt-column-ordering: 0,0,0;
+    --dt-html-background: white;
+    line-height: 1.42857143;
+    color: #333;
+    font-family: 'Montserrat';
+    text-rendering: optimizeLegibility;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    padding-top: 20px;
+    padding-bottom: 0px;
+    margin-bottom: 40px;
+    margin-top: 2px;
+    min-height: 48px;
+    border: 0px solid #0f0;
+}

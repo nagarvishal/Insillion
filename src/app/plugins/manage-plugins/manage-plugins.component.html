@@ -1,0 +1,121 @@
+<app-header></app-header>
+<!-- <div style="height: 500px;width:70%;margin-left: 15%;">
+    <ngx-monaco-editor style="height: 100%" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
+</div> -->
+<br><br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="data-box col-11">
+            <div class="row justify-content-between">
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    Show <select id="country" [(ngModel)]="limit" name="veryfied" type="number" (change)="changeLimitSearch()">
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> Entry
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5">
+                    <input type="text"  [(ngModel)]="searchString" placeholder="SEARCH" (ngModelChange)="changeLimitSearch()">
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th  rowspan="1" colspan="1" style="width: 20px;">SI.NO.</th>
+                            <th  rowspan="1" colspan="1" style="width: 100px;">Plugin Id</th>
+                            <th  rowspan="1" colspan="1" style="width: 388px;">Plugin Name</th>
+                            <th  rowspan="1" colspan="1" style="width: 60px;">Status</th>
+                            <th  rowspan="1" colspan="1" style="width: 133px;">Author</th>
+                            <th  rowspan="1" colspan="1" style="width: 200px;">Plugin Description</th>
+                            <th  rowspan="1" colspan="1" style="width: 130px;">Plugin Type</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created At</th>
+                            <th  rowspan="1" colspan="1" style="width: 155px;">Last Modified</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Created By</th>
+                            <th  rowspan="1" colspan="1" style="width: 104px;">Last Modified By</th>
+                            <th  rowspan="1" colspan="1" style="width: 140px;">Component</th>
+                            <th  rowspan="1" colspan="1" style="width: 69px;">Modifing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd" *ngFor="let index=index;let plugin of pluginsData">
+                            <td>{{offset+index}}</td>
+                            <td style="color: blue;font-weight: 400;" (click)="edithPlugin(plugin,index)">{{plugin.plugin_id}}</td>
+                            <td  (click)="edithPlugin(plugin,index)">{{plugin.plugin_name}}</td>
+                            
+                            <td>{{plugin.status|changeBoolean}}</td>
+                            
+                            <td>admin</td>
+                            <td>{{plugin.plugin_desc}}</td>
+                            <td>{{plugin.plugin_type}}</td>
+                            <td>{{plugin.created_at}}</td>
+                            <td>{{plugin.updated_at}}</td>
+                            <td>{{plugin.created_by}}</td>
+                            <td>{{plugin.updated_by}}</td>
+                            <td>{{plugin.component}}</td>
+                            <td><button class="ibtn groupEdit" (click)="edithPlugin(plugin,index)">Edith</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="numOfButton<=7; then thenBlock; else elseBlock"></div>
+                <ng-template #thenBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton,
+                                'nonactive':element.textContent!=activeButton
+                            }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-4" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} entries</div>
+                    </div>
+                </ng-template>
+                <ng-template #elseBlock>
+                    <div class="row justify-content-between" style="margin-right:10px">
+                        <div class="col-7" #parent>
+                            <button class="nonactive">Previous</button>
+                            <button *ngFor="let button of buttonArray;let index=index" #element (click)="navigationClick($event,element,parent)"
+                            [ngClass]="{
+                                'active':element.textContent==activeButton && element.textContent!='.........',
+                                'nonactive':element.textContent!=activeButton && element.textContent !='.........',
+                                'buttonDisable':element.textContent=='.........'
+                                }"
+                            >{{button}}</button>
+                            <button class="nonactive">Next</button>
+                        </div>
+                        <div class="col-3" style="text-align: end;">Showing {{offset}} to {{offset+limit-1}} Content</div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-11 col-sm-11 col-xs-11" style="background-color:rgb(255, 246, 234);">
+            <label class="label">
+                <input type="file" (change)="onChangeFile($event)"/>
+                <span>Upload Plugine</span>
+            </label>
+            <p>Upload a zip file that contains conf.json and all other files of this plugin.</p>
+            <p>The zip file should have one root folder and all other content inside that folder.</p>
+            <p>There must be one file named conf.json which must have "plugin_name" and "plugin_type" at the minimum.</p>
+            <br>
+        </div>
+    </div>
+</div>
+
+<p-toast styleClass="custom-toast"
+    [life]="5000"
+    position="top-right"
+    [showTransformOptions]="'translateY(100%)'" 
+    [showTransitionOptions]="'1000ms'" 
+    [hideTransitionOptions]="'1000ms'" 
+    [showTransformOptions]="'translateX(100%)'" />
