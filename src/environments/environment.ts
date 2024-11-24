@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    Url: 'http://13.235.82.235:4500',
+    Url: 'https://ipds3-cloware.xyz',
     Port:4200
 };
